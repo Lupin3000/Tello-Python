@@ -34,6 +34,15 @@ def signal_handler(sig: int, frame: Optional[FrameType]) -> None:
 
 
 def controller_loop(controller_object: Controller, drone_object: TelloDrone) -> None:
+    """
+    Controls the main loop driving the interaction between a game controller and a drone.
+
+    :param controller_object: The controller object.
+    :type controller_object: Controller
+    :param drone_object: The drone object.
+    :type drone_object: TelloDrone
+    :return: None
+    """
     while True:
         drone_object.reset_rc_speed()
 

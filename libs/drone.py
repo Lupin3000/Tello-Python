@@ -14,6 +14,7 @@ class SpeedVector:
     potential directions, including forward-backward, left-right, up-down, and
     clockwise-counterclockwise.
     """
+
     forward_backward: int = 0
     left_right: int = 0
     up_down: int = 0

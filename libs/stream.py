@@ -1,11 +1,26 @@
 from atexit import register
 from threading import Event
+from djitellopy import Tello
 import cv2
 
 
 class VideoStream:
+    """
+    Represents a control interface for managing a Tello drone's video stream and real-time
+    operations display.
+    """
 
-    def __init__(self, drone_object, window_name: str, shutdown_flag: Event):
+    def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
+        """
+        Represents a control interface for managing a Tello drone's operations.
+
+        :param drone_object: The Tello drone object.
+        :type drone_object: Tello
+        :param window_name: The name of the OpenCV window.
+        :type window_name: str
+        :param shutdown_flag: The shutdown event flag.
+        :type shutdown_flag: Event
+        """
         self._drone = drone_object
         self._window_name = str(window_name)
         self._running = False
@@ -14,19 +29,40 @@ class VideoStream:
         register(self._close)
 
     def _close(self) -> None:
+        """
+        Stops the video stream from the drone and closes any OpenCV windows.
+
+        :return: None
+        """
         print('[INFO] Force stream stop...')
         self._drone.streamoff()
         cv2.destroyAllWindows()
 
-    def start_stream(self):
+    def start_stream(self) -> None:
+        """
+        Starts the streaming process if it is not already running.
+
+        :return: None
+        """
         if not self._running:
             self._running = True
             self._loop()
 
-    def stop_stream(self):
+    def stop_stream(self) -> None:
+        """
+        Stops the active streaming process for the associated object.
+
+        :return: None
+        """
         self._running = False
 
     def _loop(self) -> None:
+        """
+        Executes the main loop to process video frames from the drone, allowing real-time
+        display of the stream, and handles user input for terminating the stream.
+
+        :return: None
+        """
         self._drone.streamon()
 
         cv2.namedWindow(self._window_name, cv2.WINDOW_AUTOSIZE)
