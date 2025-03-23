@@ -1,0 +1,4 @@
+setuptools==77.0.3
+wheel==0.45.1
+hidapi==0.14.0.post4
+djitellopy==2.5.0
