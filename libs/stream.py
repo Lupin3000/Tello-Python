@@ -1,7 +1,9 @@
 from atexit import register
 from threading import Event
-from djitellopy import Tello
+from typing import Tuple
 import cv2
+import numpy as np
+from djitellopy import Tello
 
 
 class VideoStream:
@@ -56,6 +58,30 @@ class VideoStream:
         """
         self._running = False
 
+    def _read_drone_metrics(self) -> Tuple[int, int, int, int]:
+        """
+        Fetches and processes metrics from Tello drone.
+
+        :return: Returns battery (%), temperature (Celsius), height (cm), and flight time (s).
+        :rtype: tuple
+        """
+        battery = self._drone.get_battery()
+        temperature = self._drone.get_temperature()
+        height = self._drone.get_height()
+        flight_time = self._drone.get_flight_time()
+
+        val_battery = battery if battery is not None else 0
+        val_temperature = temperature if temperature is not None else 0
+        val_height = height if height is not None else 0
+        val_flight_time = flight_time if flight_time is not None else 0
+
+        return val_battery, val_temperature, val_height, val_flight_time
+
+    def _draw_information(self, current_frame) -> None:
+        # height, width = current_frame.shape[:2]
+        # battery, temperature, height, flight_time = self._read_drone_metrics()
+        pass
+
     def _loop(self) -> None:
         """
         Executes the main loop to process video frames from the drone, allowing real-time
@@ -75,7 +101,9 @@ class VideoStream:
                 print('[WARNING] No frame received.')
                 continue
 
-            # frame_width = bgr_frame.shape[1]
+            if bgr_frame.dtype != np.uint8:
+                bgr_frame = bgr_frame.astype(np.uint8)
+
             rgb_frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
             flipped_frame = cv2.flip(rgb_frame, 1)
 
