@@ -87,7 +87,7 @@ class VideoStream:
 
         return val_battery, val_temperature, val_height, val_flight_time
 
-    def _draw_information(self, current_frame) -> None:
+    def _draw_information(self, current_frame: np.array) -> None:
         # height, width = current_frame.shape[:2]
         # battery, temperature, height, flight_time = self._read_drone_metrics()
         pass
@@ -116,6 +116,8 @@ class VideoStream:
 
             rgb_frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
             flipped_frame = cv2.flip(rgb_frame, 1)
+
+            self._draw_information(current_frame=flipped_frame)
 
             cv2.imshow(self._window_name, flipped_frame)
 
