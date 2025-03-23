@@ -73,7 +73,7 @@ class VideoStream:
         Fetches and processes metrics from Tello drone.
 
         :return: Returns battery (%), temperature (Celsius), height (cm), and flight time (s).
-        :rtype: tuple
+        :rtype: Tuple[int, int, int, int]
         """
         battery = self._drone.get_battery()
         temperature = self._drone.get_temperature()
