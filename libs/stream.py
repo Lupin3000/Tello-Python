@@ -10,7 +10,17 @@ class VideoStream:
     """
     Represents a control interface for managing a Tello drone's video stream and real-time
     operations display.
+
+    :ivar _BG_COLOR: The background color for the OpenCV window.
+    :ivar _FG_COLOR: The foreground color for the OpenCV window.
+    :ivar _FONT_TYPE: The font type for the OpenCV window.
+    :ivar _FONT_SCALE: The font scale for the OpenCV window.
     """
+
+    _BG_COLOR: Tuple[int, int, int] = (0, 0, 0)
+    _FG_COLOR: Tuple[int, int, int] = (255, 255, 255)
+    _FONT_TYPE: int = cv2.FONT_HERSHEY_SIMPLEX
+    _FONT_SCALE: float = .5
 
     def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
         """
