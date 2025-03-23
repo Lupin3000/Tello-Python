@@ -36,6 +36,10 @@ $ source venv/bin/activate
 (venv) $ pip3 install -r requirements.txt
 ```
 
+## Predefined controllers
+
+- Google Stadia-Controller
+
 ## Run application
 
 1. Connect controller (_verify mapping in file `config/configuration.ini`_)
