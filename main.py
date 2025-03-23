@@ -103,22 +103,20 @@ if __name__ == "__main__":
     tello = TelloDrone()
 
     try:
-        controller_thread = Thread(target=controller_loop, args=(controller, tello), daemon=True)
-        controller_thread.start()
-
         if STREAM:
+            controller_thread = Thread(target=controller_loop, args=(controller, tello), daemon=True)
+            controller_thread.start()
+
             stream = VideoStream(drone_object=tello.drone, window_name=WINDOW_NAME, shutdown_flag=SHUTDOWN)
             stream.start_stream()
         else:
-            while True:
-                sleep(1)
+            controller_loop(controller, tello)
     except KeyboardInterrupt:
         print('[INFO] Application stopped by user.')
     finally:
-        SHUTDOWN.set()
-        controller_thread.join(timeout=1)
-
         if STREAM:
+            SHUTDOWN.set()
+            controller_thread.join(timeout=1)
             stream.stop_stream()
 
         del tello
