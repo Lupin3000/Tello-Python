@@ -56,10 +56,19 @@ $ source venv/bin/activate
 (venv) $ python3 main.py
 ```
 
+## Configuration
+
+Inside file `main.py` you can modify following constants:
+
+- CONTROLLER: name of section inside file `config/configuration.ini`
+- SPEED: integer value between 0 and 100
+- STREAM: True (_video stream on_) or False (_video stream off_)
+- WINDOW_NAME: Title of video stream window
+
 ## Open items
 
-- Linux compatibility via Python evdev
 - Drone information inside videostream window
 - Take picture or record video by controller buttons
+- Linux compatibility (_via Python evdev_)
 - Add drone actions (_like flip_) by controller buttons
 - Add basic configurations for other controllers then Stadia
