@@ -10,9 +10,9 @@ from libs.stream import VideoStream
 
 
 CONTROLLER: str = 'stadia'
-DELAY: float = 0.008
 SPEED: int = 60
 STREAM: bool = True
+DELAY: float = 0.008
 WINDOW_NAME: str = 'DJI Tello'
 SHUTDOWN: Event = Event()
 
