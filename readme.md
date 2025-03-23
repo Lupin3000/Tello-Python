@@ -57,7 +57,7 @@ $ source venv/bin/activate
 ## Open items
 
 - Linux compatibility via Python evdev
-- Videostream window via Python OpenCV
+- Drone information inside videostream window
 - Take picture or record video by controller buttons
 - Add drone actions (_like flip_) by controller buttons
 - Add basic configurations for other controllers then Stadia

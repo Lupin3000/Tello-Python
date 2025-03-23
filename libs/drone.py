@@ -59,10 +59,11 @@ class TelloDrone:
 
         :return: None
         """
-        if self.drone and not self.grounded:
-            print('[INFO] Force drone landing...')
-            self.drone.land()
-            self.grounded = True
+        if self.drone:
+            if not self.grounded:
+                print('[INFO] Force drone landing...')
+                self.drone.land()
+                self.grounded = True
             self.drone.end()
 
     def start(self) -> None:
