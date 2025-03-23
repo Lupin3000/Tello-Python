@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
             sleep(DELAY)
     except KeyboardInterrupt:
-        print(f'[INFO] Application stopped by user.')
+        print('[INFO] Application stopped by user.')
     finally:
         del tello
         del controller

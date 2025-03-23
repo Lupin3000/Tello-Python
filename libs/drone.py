@@ -60,7 +60,7 @@ class TelloDrone:
         :return: None
         """
         if self.drone and not self.grounded:
-            print(f'[INFO] Force drone landing...')
+            print('[INFO] Force drone landing...')
             self.drone.land()
             self.grounded = True
             self.drone.end()
@@ -72,7 +72,7 @@ class TelloDrone:
         :return: None
         """
         if self.grounded:
-            print(f'[INFO] Takeoff drone...')
+            print('[INFO] Takeoff drone...')
             self.drone.takeoff()
             self.grounded = False
 
@@ -86,7 +86,7 @@ class TelloDrone:
         :return: None
         """
         if not self.grounded:
-            print(f'[INFO] Landing drone...')
+            print('[INFO] Landing drone...')
             self.drone.land()
             self.grounded = True
 

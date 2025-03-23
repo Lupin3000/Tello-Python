@@ -89,7 +89,7 @@ class Controller:
         :return: None
         """
         if self._controller:
-            print(f'[INFO] Disconnect from controller.')
+            print('[INFO] Disconnect from controller.')
             self._controller.close()
 
     def _set_right_stick_active(self, direction: Optional[str]) -> None:
