@@ -12,10 +12,10 @@ Currently, this project is only fully supported on macOS. Users on other operati
 
 ```shell
 # clone repository
-$ git clone ...
+$ git clone https://github.com/Lupin3000/Tello-Python.git
 
 # change into cloned root directory
-$ cd ...
+$ cd Tello-Python/
 
 # create Python virtualenv (optional but recommended)
 $ python3 -m venv venv
@@ -36,5 +36,5 @@ $ source venv/bin/activate
 
 ```shell
 # run application
-(venv) python3 main.py
+(venv) $ python3 main.py
 ```
