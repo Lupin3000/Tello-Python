@@ -1,5 +1,7 @@
 # DJI Tello - Python
 
+![DJI Tello Drone](./img/dji_tello_drone.jpg)
+
 ## Important
 
 The owner of this project assumes no responsibility for any damage, issues, or legal consequences resulting from the use of this software. Use it at your own risk and ensure compliance with all applicable laws and regulations.
