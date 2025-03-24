@@ -40,6 +40,107 @@ class VideoStream:
 
         register(self._close)
 
+    @staticmethod
+    def _draw_rounded_rectangle(img: np.array, top_left: tuple, bottom_right: tuple, color: tuple, radius: int) -> None:
+        """
+        Draw a rounded rectangle on an image.
+
+        :param img: The image to draw the rectangle on.
+        :type img: np.array
+        :param top_left: The top-left corner of the rectangle (x, y).
+        :type top_left: tuple
+        :param bottom_right: The bottom-right corner of the rectangle (x, y).
+        :type bottom_right: tuple
+        :param color: The color of the rectangle.
+        :type color: tuple
+        :param radius: The radius of the rectangle corners.
+        :type radius: int
+        :return: None
+        """
+        x1, y1 = top_left
+        x2, y2 = bottom_right
+
+        cv2.line(img, (x1 + radius, y1), (x2 - radius, y1), color, 2)
+        cv2.line(img, (x1 + radius, y2), (x2 - radius, y2), color, 2)
+        cv2.line(img, (x1, y1 + radius), (x1, y2 - radius), color, 2)
+        cv2.line(img, (x2, y1 + radius), (x2, y2 - radius), color, 2)
+        cv2.ellipse(img, (x1 + radius, y1 + radius), (radius, radius), 180, 0, 90, color, 2)
+        cv2.ellipse(img, (x2 - radius, y1 + radius), (radius, radius), 270, 0, 90, color, 2)
+        cv2.ellipse(img, (x1 + radius, y2 - radius), (radius, radius), 90, 0, 90, color, 2)
+        cv2.ellipse(img, (x2 - radius, y2 - radius), (radius, radius), 0, 0, 90, color, 2)
+
+    @staticmethod
+    def _get_battery_color(percent: int) -> Tuple[int, int, int]:
+        """
+        Determines the RGB color representation for a given battery percentage.
+
+        :param percent: The battery percentage.
+        :type percent: int
+        :return: Returns the RGB color.
+        :rtype: Tuple[int, int, int]
+        """
+        if percent >= 75:
+            return 0, 255, 0
+        elif percent >= 20:
+            return 0, 255, 255
+        else:
+            return 0, 0, 255
+
+    @staticmethod
+    def _draw_battery(img: np.array, top_left: tuple, bottom_right: tuple, battery_percent: int) -> None:
+        """
+        Draws a graphical representation of a battery on the given image.
+
+        :param img: The image to draw the battery on.
+        :type img: np.array
+        :param top_left: The top-left corner of the battery (x, y).
+        :type top_left: tuple
+        :param bottom_right: The bottom-right corner of the battery (x, y).
+        :type bottom_right: tuple
+        :param battery_percent: The battery percentage.
+        :type battery_percent: int
+        :return: None
+        """
+        radius = 10
+        x1, y1 = top_left
+        x2, y2 = bottom_right
+
+        color = VideoStream._get_battery_color(battery_percent)
+        VideoStream._draw_rounded_rectangle(img, top_left, bottom_right, color, radius)
+
+        pin_width = 10
+        pin_height = (y2 - y1) // 2
+        pin_x1 = x2
+        pin_x2 = x2 + pin_width
+        pin_y1 = y1 + (y2 - y1 - pin_height) // 2
+        pin_y2 = pin_y1 + pin_height
+        cv2.rectangle(img, (pin_x1, pin_y1), (pin_x2, pin_y2), color, -1)
+
+        if battery_percent >= 80:
+            block_count = 4
+        elif battery_percent >= 60:
+            block_count = 3
+        elif battery_percent >= 40:
+            block_count = 2
+        elif battery_percent >= 20:
+            block_count = 1
+        else:
+            block_count = 0
+
+        padding = 10
+        total_blocks = 4
+        available_width = x2 - x1 - 2 * padding
+        available_height = y2 - y1 - 2 * padding
+        block_width = (available_width - (total_blocks - 1) * padding) // total_blocks
+        block_height = available_height
+
+        for i in range(block_count):
+            bx1 = x1 + padding + i * (block_width + padding)
+            by1 = y1 + padding
+            bx2 = bx1 + block_width
+            by2 = by1 + block_height
+            cv2.rectangle(img, (bx1, by1), (bx2, by2), color, -1)
+
     def _close(self) -> None:
         """
         Stops the video stream from the drone and closes any OpenCV windows.
@@ -76,6 +177,8 @@ class VideoStream:
         height, width = current_img.shape[:2]
         battery, temperature, flight_height, flight_time = self._read_drone_metrics()
         info_txt = f'{battery} % - {temperature} Celsius - {flight_height} cm - {flight_time} sec'
+
+        VideoStream._draw_battery(current_img, (20, 20), (120, 70), battery)
 
         rect_height = 40
         cv2.rectangle(current_img, (0, height - rect_height), (width, height), self._BG_COLOR, -1)
