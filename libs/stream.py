@@ -23,6 +23,7 @@ class VideoStream:
     _GREEN_COLOR: Tuple[int, int, int] = (0, 255, 0)
     _YELLOW_COLOR: Tuple[int, int, int] = (0, 255, 255)
     _RED_COLOR: Tuple[int, int, int] = (0, 0, 255)
+    _BLACK_COLOR: Tuple[int, int, int] = (0, 0, 0)
 
     def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
         """
@@ -135,6 +136,28 @@ class VideoStream:
             cv2.rectangle(img, (bx1, by1), (bx2, by2), color, -1)
 
     @staticmethod
+    def _draw_scale_slider(img: np.array, pos_x: int, pos_y: int, color: Tuple[int, int, int]) -> None:
+        """
+        Draws a scale slider on the given image at the specified position with the given color.
+
+        :param img: The image to draw the slider on.
+        :type img: np.array
+        :param pos_x: The x-coordinate where the slider is to be drawn.
+        :type pos_x: int
+        :param pos_y: The y-coordinate where the slider is to be drawn.
+        :type pos_y: int
+        :param color: The color of the slider in a BGR tuple format.
+        :type color: Tuple[int, int, int]
+        :return: None
+        """
+        x = pos_x
+        y = pos_y
+
+        points = np.array([[x, y], [x - 10, y + 10], [x - 60, y + 10], [x - 60, y - 10], [x - 10, y - 10]])
+        cv2.fillPoly(img, [points], color=color)
+        cv2.polylines(img, [points], isClosed=True, color=VideoStream._BLACK_COLOR, thickness=1)
+
+    @staticmethod
     def _draw_scale(img: np.array, pos_x: int, height: int) -> None:
         """
         Draws a vertical scale on the provided image.
@@ -186,8 +209,7 @@ class VideoStream:
 
     def _draw_information(self, frame: np.array) -> None:
         """
-        Displays various drone metrics such as battery percentage, temperature, flight height,
-        and flight time overlaid onto the given current image.
+        Displays drone metrics such as battery status and flight time on current frame.
 
         :param frame: The current frame to overlay the metrics on.
         :type frame: np.array
@@ -201,7 +223,24 @@ class VideoStream:
         scale_pos_x = width - self._MARGIN
         scale_height = height - self._MARGIN
 
+        slider_min_y = self._MARGIN
+        slider_max_y = scale_height
+        max_flight_height: int = 2000
+
+        current_flight_height = max(0, min(flight_height, max_flight_height))
+
+        if current_flight_height >= 1900:
+            slider_color = self._RED_COLOR
+        elif current_flight_height >= 1800:
+            slider_color = self._YELLOW_COLOR
+        else:
+            slider_color = self._GREEN_COLOR
+
+        slider_pos_x = scale_pos_x - 25
+        slider_pos_y = int(slider_max_y - (current_flight_height / max_flight_height) * (slider_max_y - slider_min_y))
+
         VideoStream._draw_battery(img=frame, top_left=battery_pos_1, bottom_right=battery_pos_2, percent=battery)
+        VideoStream._draw_scale_slider(img=frame, pos_x=slider_pos_x, pos_y=slider_pos_y, color=slider_color)
         VideoStream._draw_scale(img=frame, pos_x=scale_pos_x, height=scale_height)
 
     def _stream_loop(self) -> None:
