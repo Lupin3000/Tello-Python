@@ -14,7 +14,7 @@ Currently, this project is only fully supported on macOS. Users on other operati
 
 ## Minimum requirements
 
-The code is writen and tested with following requirements:
+The code is written and tested with following requirements:
 
 [![Static](https://img.shields.io/badge/python->=3.12.x-green)](https://python.org)
 [![Static](https://img.shields.io/badge/hidapi-==0.14.0-green)](https://github.com/trezor/cython-hidapi)
