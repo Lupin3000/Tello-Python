@@ -11,16 +11,18 @@ class VideoStream:
     Represents a control interface for managing a Tello drone's video stream and real-time
     operations display.
 
-    :ivar _BG_COLOR: The background color for the OpenCV window.
-    :ivar _FG_COLOR: The foreground color for the OpenCV window.
-    :ivar _FONT_TYPE: The font type for the OpenCV window.
-    :ivar _FONT_SCALE: The font scale for the OpenCV window.
+    :ivar _MARGIN: Defining the margin for drawing.
+    :ivar _WHITE_COLOR: Defining the white color for drawing.
+    :ivar _GREEN_COLOR: Defining the green color for drawing.
+    :ivar _YELLOW_COLOR: Defining the yellow color for drawing.
+    :ivar _RED_COLOR: Defining the red color for drawing.
     """
 
-    _BG_COLOR: Tuple[int, int, int] = (0, 0, 0)
-    _FG_COLOR: Tuple[int, int, int] = (255, 255, 255)
-    _FONT_TYPE: int = cv2.FONT_HERSHEY_SIMPLEX
-    _FONT_SCALE: float = .6
+    _MARGIN: int = 20
+    _WHITE_COLOR: Tuple[int, int, int] = (255, 255, 255)
+    _GREEN_COLOR: Tuple[int, int, int] = (0, 255, 0)
+    _YELLOW_COLOR: Tuple[int, int, int] = (0, 255, 255)
+    _RED_COLOR: Tuple[int, int, int] = (0, 0, 255)
 
     def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
         """
@@ -70,24 +72,7 @@ class VideoStream:
         cv2.ellipse(img, (x2 - radius, y2 - radius), (radius, radius), 0, 0, 90, color, 2)
 
     @staticmethod
-    def _get_battery_color(percent: int) -> Tuple[int, int, int]:
-        """
-        Determines the RGB color representation for a given battery percentage.
-
-        :param percent: The battery percentage.
-        :type percent: int
-        :return: Returns the RGB color.
-        :rtype: Tuple[int, int, int]
-        """
-        if percent >= 75:
-            return 0, 255, 0
-        elif percent >= 20:
-            return 0, 255, 255
-        else:
-            return 0, 0, 255
-
-    @staticmethod
-    def _draw_battery(img: np.array, top_left: tuple, bottom_right: tuple, battery_percent: int) -> None:
+    def _draw_battery(img: np.array, top_left: tuple, bottom_right: tuple, percent: int, radius: int = 10) -> None:
         """
         Draws a graphical representation of a battery on the given image.
 
@@ -97,18 +82,25 @@ class VideoStream:
         :type top_left: tuple
         :param bottom_right: The bottom-right corner of the battery (x, y).
         :type bottom_right: tuple
-        :param battery_percent: The battery percentage.
-        :type battery_percent: int
+        :param percent: The battery percentage.
+        :type percent: int
+        :param radius: The radius of the battery corners. Default: 10.
+        :type radius: int
         :return: None
         """
-        radius = 10
         x1, y1 = top_left
         x2, y2 = bottom_right
 
-        color = VideoStream._get_battery_color(battery_percent)
+        if percent >= 75:
+            color = VideoStream._GREEN_COLOR
+        elif percent >= 20:
+            color = VideoStream._YELLOW_COLOR
+        else:
+            color = VideoStream._RED_COLOR
+
         VideoStream._draw_rounded_rectangle(img, top_left, bottom_right, color, radius)
 
-        pin_width = 10
+        pin_width: int = 10
         pin_height = (y2 - y1) // 2
         pin_x1 = x2
         pin_x2 = x2 + pin_width
@@ -117,19 +109,19 @@ class VideoStream:
 
         cv2.rectangle(img, (pin_x1, pin_y1), (pin_x2, pin_y2), color, -1)
 
-        if battery_percent >= 80:
+        if percent >= 80:
             block_count = 4
-        elif battery_percent >= 60:
+        elif percent >= 60:
             block_count = 3
-        elif battery_percent >= 40:
+        elif percent >= 40:
             block_count = 2
-        elif battery_percent >= 20:
+        elif percent >= 20:
             block_count = 1
         else:
             block_count = 0
 
-        padding = 10
-        total_blocks = 4
+        padding: int = 10
+        total_blocks: int = 4
         available_width = x2 - x1 - 2 * padding
         available_height = y2 - y1 - 2 * padding
         block_width = (available_width - (total_blocks - 1) * padding) // total_blocks
@@ -142,50 +134,25 @@ class VideoStream:
             by2 = by1 + block_height
             cv2.rectangle(img, (bx1, by1), (bx2, by2), color, -1)
 
-    def _close(self) -> None:
-        """
-        Stops the video stream from the drone and closes any OpenCV windows.
-
-        :return: None
-        """
-        print('[INFO] Force stream stop...')
-        self._drone.streamoff()
-        cv2.destroyAllWindows()
-
-    def _read_drone_metrics(self) -> Tuple[int, float, int, int]:
-        """
-        Fetches and processes metrics from Tello drone.
-
-        :return: Returns battery (%), temperature (Celsius), flight height (cm), and flight time (s).
-        :rtype: Tuple[int, float, int, int]
-        """
-        return (
-            self._drone.get_battery() or 0,
-            float(self._drone.get_temperature() or 0.0),
-            self._drone.get_height() or 0,
-            self._drone.get_flight_time() or 0
-        )
-
-    def _draw_scale(self, img: np.array, margin: int = 20, spacing: int = 4) -> None:
+    @staticmethod
+    def _draw_scale(img: np.array, pos_x: int, height: int) -> None:
         """
         Draws a vertical scale on the provided image.
 
         :param img: The image to draw the scale on.
         :type img: np.array
-        :param margin: The margin around the scale. Default: 20.
-        :type margin: int
-        :param spacing: The spacing between scale lines. Default: 4.
-        :type spacing: int
+        :param pos_x: The x-coordinate of the scale's starting position.
+        :type pos_x: int
+        :param height: The height of the scale.
+        :type height: int
         :return: None
         """
-        height, width = img.shape[:2]
+        eny_y = int(height)
+        start_y = VideoStream._MARGIN
 
-        short_length = 10
-        long_length = 20
-
-        start_y = margin
-        eny_y = height - margin * 3
-        pos_x = width - margin
+        spacing: int = 4
+        short_length: int = 10
+        long_length: int = 20
 
         for y in range(start_y, eny_y + 1, spacing):
             if (y - start_y) % 10 == 0:
@@ -193,35 +160,51 @@ class VideoStream:
             else:
                 line_length = short_length
 
-            cv2.line(img, (pos_x - line_length, y), (pos_x, y), self._FG_COLOR, 1)
+            cv2.line(img, (pos_x - line_length, y), (pos_x, y), VideoStream._WHITE_COLOR, 1)
 
-    def _draw_information(self, current_img: np.array) -> None:
+    def _close(self) -> None:
+        """
+        Stops the video stream from the Tello drone and closes any OpenCV windows.
+
+        :return: None
+        """
+        print('[INFO] Force stream stop...')
+        self._drone.streamoff()
+        cv2.destroyAllWindows()
+
+    def _read_drone_metrics(self) -> Tuple[int, int]:
+        """
+        Fetches battery and height metrics from Tello drone.
+
+        :return: Returns battery (in %), flight height (in cm).
+        :rtype: Tuple[int, int]
+        """
+        return (
+            self._drone.get_battery() or 0,
+            self._drone.get_height() or 0
+        )
+
+    def _draw_information(self, frame: np.array) -> None:
         """
         Displays various drone metrics such as battery percentage, temperature, flight height,
         and flight time overlaid onto the given current image.
 
-        :param current_img: The current image to overlay the metrics on.
-        :type current_img: np.array
+        :param frame: The current frame to overlay the metrics on.
+        :type frame: np.array
         :return: None
         """
-        height, width = current_img.shape[:2]
-        battery, temperature, flight_height, flight_time = self._read_drone_metrics()
-        info_txt = f'{battery} % - {temperature} Celsius - {flight_height} cm - {flight_time} sec'
+        height, width = frame.shape[:2]
+        battery, flight_height = self._read_drone_metrics()
 
-        VideoStream._draw_battery(current_img, (20, 20), (120, 70), battery)
-        self._draw_scale(current_img)
+        battery_pos_1 = (self._MARGIN, self._MARGIN)
+        battery_pos_2 = (self._MARGIN + 100, self._MARGIN + 50)
+        scale_pos_x = width - self._MARGIN
+        scale_height = height - self._MARGIN
 
-        rect_height = 40
-        cv2.rectangle(current_img, (0, height - rect_height), (width, height), self._BG_COLOR, -1)
+        VideoStream._draw_battery(img=frame, top_left=battery_pos_1, bottom_right=battery_pos_2, percent=battery)
+        VideoStream._draw_scale(img=frame, pos_x=scale_pos_x, height=scale_height)
 
-        (txt_width, txt_height), baseline = cv2.getTextSize(info_txt, self._FONT_TYPE, self._FONT_SCALE, 1)
-        text_x = width // 2 - txt_width // 2
-        text_y = height - (rect_height - txt_height) // 2 - baseline
-
-        cv2.putText(current_img, text=info_txt, org=(text_x, text_y + 5), fontFace=self._FONT_TYPE,
-                    fontScale=self._FONT_SCALE, color=self._FG_COLOR, thickness=1)
-
-    def _loop(self) -> None:
+    def _stream_loop(self) -> None:
         """
         Executes the main loop to process video frames from the drone, allowing real-time
         display of the stream, and handles user input for terminating the stream.
@@ -246,7 +229,7 @@ class VideoStream:
             rgb_frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
             flipped_frame = cv2.flip(rgb_frame, 1)
 
-            self._draw_information(current_img=flipped_frame)
+            self._draw_information(frame=flipped_frame)
 
             cv2.imshow(self._window_name, flipped_frame)
 
@@ -265,7 +248,7 @@ class VideoStream:
         """
         if not self._running:
             self._running = True
-            self._loop()
+            self._stream_loop()
 
     def stop_stream(self) -> None:
         """
