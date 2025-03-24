@@ -114,6 +114,7 @@ class VideoStream:
         pin_x2 = x2 + pin_width
         pin_y1 = y1 + (y2 - y1 - pin_height) // 2
         pin_y2 = pin_y1 + pin_height
+
         cv2.rectangle(img, (pin_x1, pin_y1), (pin_x2, pin_y2), color, -1)
 
         if battery_percent >= 80:
@@ -165,6 +166,35 @@ class VideoStream:
             self._drone.get_flight_time() or 0
         )
 
+    def _draw_scale(self, img: np.array, margin: int = 20, spacing: int = 4) -> None:
+        """
+        Draws a vertical scale on the provided image.
+
+        :param img: The image to draw the scale on.
+        :type img: np.array
+        :param margin: The margin around the scale. Default: 20.
+        :type margin: int
+        :param spacing: The spacing between scale lines. Default: 4.
+        :type spacing: int
+        :return: None
+        """
+        height, width = img.shape[:2]
+
+        short_length = 10
+        long_length = 20
+
+        start_y = margin
+        eny_y = height - margin * 3
+        pos_x = width - margin
+
+        for y in range(start_y, eny_y + 1, spacing):
+            if (y - start_y) % 10 == 0:
+                line_length = long_length
+            else:
+                line_length = short_length
+
+            cv2.line(img, (pos_x - line_length, y), (pos_x, y), self._FG_COLOR, 1)
+
     def _draw_information(self, current_img: np.array) -> None:
         """
         Displays various drone metrics such as battery percentage, temperature, flight height,
@@ -179,6 +209,7 @@ class VideoStream:
         info_txt = f'{battery} % - {temperature} Celsius - {flight_height} cm - {flight_time} sec'
 
         VideoStream._draw_battery(current_img, (20, 20), (120, 70), battery)
+        self._draw_scale(current_img)
 
         rect_height = 40
         cv2.rectangle(current_img, (0, height - rect_height), (width, height), self._BG_COLOR, -1)
