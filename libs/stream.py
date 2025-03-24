@@ -20,7 +20,7 @@ class VideoStream:
     _BG_COLOR: Tuple[int, int, int] = (0, 0, 0)
     _FG_COLOR: Tuple[int, int, int] = (255, 255, 255)
     _FONT_TYPE: int = cv2.FONT_HERSHEY_SIMPLEX
-    _FONT_SCALE: float = .5
+    _FONT_SCALE: float = .6
 
     def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
         """
@@ -68,29 +68,42 @@ class VideoStream:
         """
         self._running = False
 
-    def _read_drone_metrics(self) -> Tuple[int, int, int, int]:
+    def _read_drone_metrics(self) -> Tuple[int, float, int, int]:
         """
         Fetches and processes metrics from Tello drone.
 
-        :return: Returns battery (%), temperature (Celsius), height (cm), and flight time (s).
-        :rtype: Tuple[int, int, int, int]
+        :return: Returns battery (%), temperature (Celsius), flight height (cm), and flight time (s).
+        :rtype: Tuple[int, float, int, int]
         """
-        battery = self._drone.get_battery()
-        temperature = self._drone.get_temperature()
-        height = self._drone.get_height()
-        flight_time = self._drone.get_flight_time()
+        return (
+            self._drone.get_battery() or 0,
+            float(self._drone.get_temperature() or 0.0),
+            self._drone.get_height() or 0,
+            self._drone.get_flight_time() or 0
+        )
 
-        val_battery = battery if battery is not None else 0
-        val_temperature = temperature if temperature is not None else 0
-        val_height = height if height is not None else 0
-        val_flight_time = flight_time if flight_time is not None else 0
+    def _draw_information(self, current_img: np.array) -> None:
+        """
+        Displays various drone metrics such as battery percentage, temperature, flight height,
+        and flight time overlaid onto the given current image.
 
-        return val_battery, val_temperature, val_height, val_flight_time
+        :param current_img: The current image to overlay the metrics on.
+        :type current_img: np.array
+        :return: None
+        """
+        height, width = current_img.shape[:2]
+        battery, temperature, flight_height, flight_time = self._read_drone_metrics()
+        info_txt = f'{battery} % - {temperature} Celsius - {flight_height} cm - {flight_time} sec'
 
-    def _draw_information(self, current_frame: np.array) -> None:
-        # height, width = current_frame.shape[:2]
-        # battery, temperature, height, flight_time = self._read_drone_metrics()
-        pass
+        rect_height = 40
+        cv2.rectangle(current_img, (0, height - rect_height), (width, height), self._BG_COLOR, -1)
+
+        (txt_width, txt_height), baseline = cv2.getTextSize(info_txt, self._FONT_TYPE, self._FONT_SCALE, 1)
+        text_x = width // 2 - txt_width // 2
+        text_y = height - (rect_height - txt_height) // 2 - baseline
+
+        cv2.putText(current_img, text=info_txt, org=(text_x, text_y + 5), fontFace=self._FONT_TYPE,
+                    fontScale=self._FONT_SCALE, color=self._FG_COLOR, thickness=1)
 
     def _loop(self) -> None:
         """
@@ -117,7 +130,7 @@ class VideoStream:
             rgb_frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
             flipped_frame = cv2.flip(rgb_frame, 1)
 
-            self._draw_information(current_frame=flipped_frame)
+            self._draw_information(current_img=flipped_frame)
 
             cv2.imshow(self._window_name, flipped_frame)
 

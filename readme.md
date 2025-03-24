@@ -67,7 +67,6 @@ Inside file `main.py` you can modify following constants:
 
 ## Open items
 
-- Drone information inside videostream window
 - Take picture or record video by controller buttons
 - Linux compatibility (_via Python evdev_)
 - Add drone actions (_like flip_) by controller buttons
