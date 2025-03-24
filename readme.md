@@ -17,6 +17,9 @@ Currently, this project is only fully supported on macOS. Users on other operati
 [![Static](https://img.shields.io/badge/python->=3.12.x-green)](https://python.org)
 [![Static](https://img.shields.io/badge/hidapi-==0.14.0-green)](https://github.com/trezor/cython-hidapi)
 [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy)
+[![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)
+[![Static](https://img.shields.io/badge/numpy-==2.2.4-green)](https://numpy.org)
+
 
 ## Installation
 
