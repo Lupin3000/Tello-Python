@@ -8,14 +8,14 @@ from djitellopy import Tello
 
 class VideoStream:
     """
-    Represents a control interface for managing a Tello drone's video stream and real-time
-    operations display.
+    This class represents a HUD for the Tello drone's real-time video stream.
 
     :ivar _MARGIN: Defining the margin for drawing.
     :ivar _WHITE_COLOR: Defining the white color for drawing.
     :ivar _GREEN_COLOR: Defining the green color for drawing.
     :ivar _YELLOW_COLOR: Defining the yellow color for drawing.
     :ivar _RED_COLOR: Defining the red color for drawing.
+    :ivar _BLACK_COLOR: Defining the black color for drawing.
     """
 
     _MARGIN: int = 20
@@ -27,7 +27,7 @@ class VideoStream:
 
     def __init__(self, drone_object: Tello, window_name: str, shutdown_flag: Event):
         """
-        Represents a control interface for managing a Tello drone's operations.
+        Initializes and manages a Tello drone HUD window.
 
         :param drone_object: The Tello drone object.
         :type drone_object: Tello
@@ -75,7 +75,7 @@ class VideoStream:
     @staticmethod
     def _draw_battery(img: np.array, top_left: tuple, bottom_right: tuple, percent: int, radius: int = 10) -> None:
         """
-        Draws a graphical representation of a battery on the given image.
+        Draws a graphical representation of drone battery status on the HUD.
 
         :param img: The image to draw the battery on.
         :type img: np.array
@@ -138,7 +138,7 @@ class VideoStream:
     @staticmethod
     def _draw_scale_slider(img: np.array, pos_x: int, pos_y: int, color: Tuple[int, int, int]) -> None:
         """
-        Draws a scale slider on the given image at the specified position with the given color.
+        Draws a slider representing flight height of the drone on the HUD.
 
         :param img: The image to draw the slider on.
         :type img: np.array
@@ -160,7 +160,7 @@ class VideoStream:
     @staticmethod
     def _draw_scale(img: np.array, pos_x: int, height: int) -> None:
         """
-        Draws a vertical scale on the provided image.
+        Draws a vertical scale for flight height of the drone on the HUD.
 
         :param img: The image to draw the scale on.
         :type img: np.array
