@@ -50,24 +50,6 @@ class VideoStream:
         self._drone.streamoff()
         cv2.destroyAllWindows()
 
-    def start_stream(self) -> None:
-        """
-        Starts the streaming process if it is not already running.
-
-        :return: None
-        """
-        if not self._running:
-            self._running = True
-            self._loop()
-
-    def stop_stream(self) -> None:
-        """
-        Stops the active streaming process for the associated object.
-
-        :return: None
-        """
-        self._running = False
-
     def _read_drone_metrics(self) -> Tuple[int, float, int, int]:
         """
         Fetches and processes metrics from Tello drone.
@@ -140,3 +122,21 @@ class VideoStream:
                 raise KeyboardInterrupt
 
         self._close()
+
+    def start_stream(self) -> None:
+        """
+        Starts the streaming process if it is not already running.
+
+        :return: None
+        """
+        if not self._running:
+            self._running = True
+            self._loop()
+
+    def stop_stream(self) -> None:
+        """
+        Stops the active streaming process for the associated object.
+
+        :return: None
+        """
+        self._running = False
