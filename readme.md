@@ -44,12 +44,6 @@ $ source venv/bin/activate
 (venv) $ pip3 install -r requirements.txt
 ```
 
-## Predefined controllers
-
-- Google Stadia-Controller
-
-> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
-
 ## Run application and fly
 
 1. **Mandatory:** Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
@@ -76,6 +70,12 @@ Inside file `main.py` you can modify following constants:
 - **WINDOW_NAME:** Title of HUD (_video stream_) window.
 
 > You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
+
+## Predefined controllers
+
+- Google Stadia-Controller
+
+> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
 ## Preset configuration
 
