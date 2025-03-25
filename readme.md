@@ -48,7 +48,7 @@ $ source venv/bin/activate
 
 - Google Stadia-Controller
 
-> You can also add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file and adapt the constant: CONTROLLER.
+> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file and adapt the constant: CONTROLLER.
 
 ## Run application
 
