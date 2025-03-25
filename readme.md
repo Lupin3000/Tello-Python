@@ -64,7 +64,8 @@ $ source venv/bin/activate
 
 ### Predefined controllers
 
-- Google Stadia-Controller
+- **Google** Stadia-Controller
+- **Sony** DualSense Wireless Controller
 
 > You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
@@ -102,4 +103,3 @@ Currently, this project is only fully supported on macOS. Users on other operati
 - Record video by controller buttons
 - Linux compatibility (_via Python evdev_)
 - Add drone actions (_like flip_) by controller buttons
-- Add basic configurations for other controllers then Stadia
