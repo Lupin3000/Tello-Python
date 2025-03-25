@@ -1,5 +1,7 @@
 from atexit import register
 from threading import Event
+from time import strftime
+from pathlib import Path
 from typing import Tuple
 import cv2
 import numpy as np
@@ -268,9 +270,9 @@ class VideoStream:
 
             rgb_frame = cv2.cvtColor(bgr_frame, cv2.COLOR_BGR2RGB)
             flipped_frame = cv2.flip(rgb_frame, 1)
+            self._last_frame = flipped_frame.copy()
 
             self._draw_information(frame=flipped_frame)
-            self._last_frame = flipped_frame.copy()
 
             cv2.imshow(self._window_name, flipped_frame)
 
@@ -300,7 +302,24 @@ class VideoStream:
         self._running = False
 
     def capture_photo(self) -> None:
-        if self._last_frame is not None:
+        """
+        Captures photo from a video stream and saves it as an image PNG file.
+
+        :return: None
+        """
+        image = self._last_frame if hasattr(self, "_last_frame") else None
+
+        if image is not None:
             print('[INFO] Capture photo from stream.')
+            timestamp = strftime('%Y%m%d_%H%M%S')
+            filename = f'photo_{timestamp}.png'
+            target_path = Path('photos')
+            target_path.mkdir(exist_ok=True)
+
+            filename = target_path / filename
+
+            cv2.imwrite(str(filename), image)
+            print(f'[INFO] Photo saved to "{filename}".')
+
         else:
             print('[WARNING] No frame from stream captured.')

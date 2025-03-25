@@ -66,7 +66,7 @@ $ source venv/bin/activate
 
 > After takeoff, the Tello sensors require a few seconds to calibrate. During this time, the drone will not respond to controller inputs.
 
-## Configuration
+## Own configuration
 
 Inside file `main.py` you can modify following constants:
 
@@ -77,9 +77,19 @@ Inside file `main.py` you can modify following constants:
 
 > You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
 
+## Preset configuration
+
+The default configuration is with activated HUD (_video stream_), relatively slow flight speeds and Stadia Controller.
+
+- "Y" for drone takeoff
+- "A" for drone landing
+- "X" for capture a photo
+- "left stick" move up, move down, rotation clockwise and rotation counter clockwise
+- "right stick" move forward, move backward, move left and move right
+
 ## Open items
 
-- Take picture or record video by controller buttons
+- Record video by controller buttons
 - Linux compatibility (_via Python evdev_)
 - Add drone actions (_like flip_) by controller buttons
 - Add basic configurations for other controllers then Stadia

@@ -1,5 +1,6 @@
 .idea
 venv
+photos
 __pycache__
 
 helper
