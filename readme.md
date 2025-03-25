@@ -52,12 +52,12 @@ $ source venv/bin/activate
 
 ## Run application and fly
 
-1. Mandatory: Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
-2. Mandatory: Turn on Tello Drone (_in best case the drone is 100% charged_).
-3. Mandatory: Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-XXXXXX_).
-4. Optional: Decide whether you want to enable or disable the HUD (_for video streaming_).
-5. Optional: Check your surroundings to see if you can fly the drone safely.
-6. Mandatory: Run the Python application (_use file `main.py`_).
+1. **Mandatory:** Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
+2. **Mandatory:** Turn on Tello Drone (_in best case the drone is 100% charged_).
+3. **Mandatory:** Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-XXXXXX_).
+4. **Optional:** Decide whether you want to enable or disable the HUD (_for video streaming_).
+5. **Optional:** Check your surroundings to see if you can fly the drone safely.
+6. **Mandatory:** Run the Python application (_use file `main.py`_).
 
 ```shell
 # run application
@@ -70,10 +70,10 @@ $ source venv/bin/activate
 
 Inside file `main.py` you can modify following constants:
 
-- CONTROLLER: name of section inside file `config/configuration.ini` (_which controller you use to fly_).
-- SPEED: integer value between 1 and 100 (_the higher the value, the faster the drone flies_).
-- STREAM: True to fly with HUD (_video stream on_) or False for no HUD (_video stream off_).
-- WINDOW_NAME: Title of HUD (_video stream_) window.
+- **CONTROLLER:** name of section inside file `config/configuration.ini` (_which controller you use to fly_).
+- **SPEED:** integer value between 1 and 100 (_the higher the value, the faster the drone flies_).
+- **STREAM:** True to fly with HUD (_video stream on_) or False for no HUD (_video stream off_).
+- **WINDOW_NAME:** Title of HUD (_video stream_) window.
 
 > You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
 
@@ -81,11 +81,13 @@ Inside file `main.py` you can modify following constants:
 
 The default configuration is with activated HUD (_video stream_), relatively slow flight speeds and Stadia Controller.
 
-- "Y" for drone takeoff
-- "A" for drone landing
-- "X" for capture a photo
-- "left stick" move up, move down, rotation clockwise and rotation counter clockwise
-- "right stick" move forward, move backward, move left and move right
+- **Button Y:** for drone takeoff
+- **Button A:** for drone landing
+- **Button X:** for capture a photo (_picture will be saved as PNG into directory "photos"_)
+- **Left analog stick:** move up, move down, rotation clockwise and rotation counter clockwise
+- **Right analog stick:** move forward, move backward, move left and move right
+
+> The photos are created as PNG files during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
 
 ## Open items
 
