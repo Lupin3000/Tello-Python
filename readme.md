@@ -62,6 +62,8 @@ $ source venv/bin/activate
 (venv) $ python3 main.py
 ```
 
+> After takeoff, the Tello sensors require a few seconds to calibrate. During this time, the drone will not respond to controller inputs.
+
 ## Configuration
 
 Inside file `main.py` you can modify following constants:
