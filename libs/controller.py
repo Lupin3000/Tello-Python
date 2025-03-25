@@ -12,13 +12,9 @@ class Controller:
     """
     Manages a controller connection and provides mechanisms to access and update controller states.
 
-    :ivar _THRESHOLD: The threshold value for determining the direction of the analog sticks.
-    :ivar _MIDDLE: The middle value for determining the direction of the analog sticks.
     :ivar _DELAY: The delay between controller reads in seconds.
     """
 
-    _THRESHOLD: int = 50
-    _MIDDLE: int = 128
     _DELAY: float = 0.01
 
     def __init__(self, name: str):
@@ -47,15 +43,20 @@ class Controller:
             print(f'[ERROR] Failed to connect to controller: {err}')
             exit(1)
 
+        self._report_length = int(section['report_length'])
+        self._btn_byte_index = int(section['btn_byte_index'])
+
         self._btn = {
-            'TAKEOFF': int(section['btn_takeoff']),
-            'LANDING': int(section['btn_landing'])
+            'TAKEOFF': int(section['btn_takeoff_value']),
+            'LANDING': int(section['btn_landing_value'])
         }
 
-        self._axis_left_x = int(section['analog_left_x'])
-        self._axis_left_y = int(section['analog_left_y'])
-        self._axis_right_x = int(section['analog_right_x'])
-        self._axis_right_y = int(section['analog_right_y'])
+        self._analog_middle = int(section['analog_middle_value'])
+        self._analog_threshold = int(section['analog_threshold_value'])
+        self._axis_left_x = int(section['analog_left_x_index'])
+        self._axis_left_y = int(section['analog_left_y_index'])
+        self._axis_right_x = int(section['analog_right_x_index'])
+        self._axis_right_y = int(section['analog_right_y_index'])
 
         self._btn_status = {
             'TAKEOFF': False,
@@ -127,11 +128,11 @@ class Controller:
         :return: None
         """
         while True:
-            data = self._controller.read(64)
+            data = self._controller.read(self._report_length)
 
             if data:
                 with self._lock:
-                    btn_state = data[3]
+                    btn_state = data[self._btn_byte_index]
 
                     for key in self._btn.keys():
                         self._btn_status[key] = btn_state == self._btn[key]
@@ -139,17 +140,17 @@ class Controller:
                     right_x = data[self._axis_right_x]
                     right_y = data[self._axis_right_y]
 
-                    if abs(right_x - self._MIDDLE) > abs(right_y - self._MIDDLE):
-                        if right_x + self._THRESHOLD < self._MIDDLE:
+                    if abs(right_x - self._analog_middle) > abs(right_y - self._analog_middle):
+                        if right_x + self._analog_threshold < self._analog_middle:
                             self._set_right_stick_active("left")
-                        elif right_x - self._THRESHOLD > self._MIDDLE:
+                        elif right_x - self._analog_threshold > self._analog_middle:
                             self._set_right_stick_active("right")
                         else:
                             self._set_right_stick_active(None)
                     else:
-                        if right_y + self._THRESHOLD < self._MIDDLE:
+                        if right_y + self._analog_threshold < self._analog_middle:
                             self._set_right_stick_active("forward")
-                        elif right_y - self._THRESHOLD > self._MIDDLE:
+                        elif right_y - self._analog_threshold > self._analog_middle:
                             self._set_right_stick_active("backward")
                         else:
                             self._set_right_stick_active(None)
@@ -157,17 +158,17 @@ class Controller:
                     left_x = data[self._axis_left_x]
                     left_y = data[self._axis_left_y]
 
-                    if abs(left_x - self._MIDDLE) > abs(left_y - self._MIDDLE):
-                        if left_x + self._THRESHOLD < self._MIDDLE:
+                    if abs(left_x - self._analog_middle) > abs(left_y - self._analog_middle):
+                        if left_x + self._analog_threshold < self._analog_middle:
                             self._set_left_stick_active("counterclockwise")
-                        elif left_x - self._THRESHOLD > self._MIDDLE:
+                        elif left_x - self._analog_threshold > self._analog_middle:
                             self._set_left_stick_active("clockwise")
                         else:
                             self._set_left_stick_active(None)
                     else:
-                        if left_y + self._THRESHOLD < self._MIDDLE:
+                        if left_y + self._analog_threshold < self._analog_middle:
                             self._set_left_stick_active("up")
-                        elif left_y - self._THRESHOLD > self._MIDDLE:
+                        elif left_y - self._analog_threshold > self._analog_middle:
                             self._set_left_stick_active("down")
                         else:
                             self._set_left_stick_active(None)
