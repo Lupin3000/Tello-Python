@@ -73,9 +73,9 @@ $ source venv/bin/activate
 
 The default configuration is with activated HUD (_video stream_), relatively slow flight speeds and Stadia Controller.
 
-- **Button Y:** for drone takeoff.
-- **Button A:** for drone landing.
-- **Button X:** for capture a photo (_picture will be saved as PNG into directory "photos"_).
+- **Stadia Y:** - **DualSense &#x25B2;:** for drone takeoff.
+- **Stadia A:** - **DualSense X:** for drone landing.
+- **Stadia X:** - **DualSense &#x25FC;:** for capture a photo (_picture will be saved as PNG into directory "photos"_).
 - **Left analog stick:** move up, move down, rotation clockwise and rotation counterclockwise.
 - **Right analog stick:** move forward, move backward, move left and move right.
 
