@@ -81,11 +81,11 @@ Inside file `main.py` you can modify following constants:
 
 The default configuration is with activated HUD (_video stream_), relatively slow flight speeds and Stadia Controller.
 
-- **Button Y:** for drone takeoff
-- **Button A:** for drone landing
-- **Button X:** for capture a photo (_picture will be saved as PNG into directory "photos"_)
-- **Left analog stick:** move up, move down, rotation clockwise and rotation counterclockwise
-- **Right analog stick:** move forward, move backward, move left and move right
+- **Button Y:** for drone takeoff.
+- **Button A:** for drone landing.
+- **Button X:** for capture a photo (_picture will be saved as PNG into directory "photos"_).
+- **Left analog stick:** move up, move down, rotation clockwise and rotation counterclockwise.
+- **Right analog stick:** move forward, move backward, move left and move right.
 
 > The photos are created as PNG (_with timestamp in name_) files during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
 
