@@ -8,10 +8,6 @@ This software makes use of: [DJI Tello Python API](https://djitellopy.readthedoc
 
 The owner of this project assumes no responsibility for any damage, issues, or legal consequences resulting from the use of this software. Use it at your own risk and ensure compliance with all applicable laws and regulations.
 
-**Compatibility notes**
-
-Currently, this project is only fully supported on macOS. Users on other operating systems might encounter compatibility issues or limitations when running the project. Please ensure you are using macOS for the best experience.
-
 ## Installation
 
 ### Minimum requirements
@@ -95,7 +91,13 @@ Inside file `main.py` you can modify following constants:
 
 > You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
 
-## Open items
+## Notes
+
+### Compatibility
+
+Currently, this project is only fully supported on macOS. Users on other operating systems might encounter compatibility issues or limitations when running the project. Please ensure you are using macOS for the best experience.
+
+### Open items
 
 - Record video by controller buttons
 - Linux compatibility (_via Python evdev_)
