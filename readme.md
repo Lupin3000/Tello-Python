@@ -54,7 +54,7 @@ $ source venv/bin/activate
 
 1. **Mandatory:** Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
 2. **Mandatory:** Turn on Tello Drone (_in best case the drone is 100% charged_).
-3. **Mandatory:** Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-XXXXXX_).
+3. **Mandatory:** Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-??????_).
 4. **Optional:** Decide whether you want to enable or disable the HUD (_for video streaming_).
 5. **Optional:** Check your surroundings to see if you can fly the drone safely.
 6. **Mandatory:** Run the Python application (_use file `main.py`_).
@@ -84,10 +84,10 @@ The default configuration is with activated HUD (_video stream_), relatively slo
 - **Button Y:** for drone takeoff
 - **Button A:** for drone landing
 - **Button X:** for capture a photo (_picture will be saved as PNG into directory "photos"_)
-- **Left analog stick:** move up, move down, rotation clockwise and rotation counter clockwise
+- **Left analog stick:** move up, move down, rotation clockwise and rotation counterclockwise
 - **Right analog stick:** move forward, move backward, move left and move right
 
-> The photos are created as PNG files during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
+> The photos are created as PNG (_with timestamp in name_) files during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
 
 ## Open items
 
