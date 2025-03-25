@@ -48,14 +48,16 @@ $ source venv/bin/activate
 
 - Google Stadia-Controller
 
-> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file and adapt the constant: CONTROLLER.
+> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
-## Run application
+## Run application and fly
 
-1. Connect controller (_verify mapping in file `config/configuration.ini`_)
-2. Turn on Tello Drone (_in best case the drone is 100% charged_)
-3. Connect WLAN to Tello Drone AP
-4. Run application (_use file `main.py`_)
+1. Mandatory: Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
+2. Mandatory: Turn on Tello Drone (_in best case the drone is 100% charged_).
+3. Mandatory: Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-XXXXXX_).
+4. Optional: Decide whether you want to enable or disable the HUD (_for video streaming_).
+5. Optional: Check your surroundings to see if you can fly the drone safely.
+6. Mandatory: Run the Python application (_use file `main.py`_).
 
 ```shell
 # run application
