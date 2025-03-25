@@ -66,10 +66,12 @@ $ source venv/bin/activate
 
 Inside file `main.py` you can modify following constants:
 
-- CONTROLLER: name of section inside file `config/configuration.ini`
-- SPEED: integer value between 0 and 100
-- STREAM: True (_video stream on_) or False (_video stream off_)
-- WINDOW_NAME: Title of video stream window
+- CONTROLLER: name of section inside file `config/configuration.ini` (_which controller you use to fly_).
+- SPEED: integer value between 1 and 100 (_the higher the value, the faster the drone flies_).
+- STREAM: True to fly with HUD (_video stream on_) or False for no HUD (_video stream off_).
+- WINDOW_NAME: Title of HUD (_video stream_) window.
+
+> You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
 
 ## Open items
 
