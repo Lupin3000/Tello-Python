@@ -78,7 +78,7 @@ The default configuration is with activated HUD (_video stream_), relatively slo
 - **Left analog stick:** move up, move down, rotation clockwise and rotation counterclockwise.
 - **Right analog stick:** move forward, move backward, move left and move right.
 
-> The photos are created as PNG (_with timestamp in name_) files during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
+> The photos are created as PNG files (_with timestamp in name_) during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist.
 
 ### Own configuration
 
