@@ -83,7 +83,7 @@ class TelloDrone:
 
     def land(self) -> None:
         """
-        Landing the drone if drone is flying.
+        Lands the drone if it is currently airborne.
 
         :return: None
         """
@@ -97,7 +97,7 @@ class TelloDrone:
 
     def update_position(self) -> None:
         """
-        Updates the drone's position based by rc control.
+        Updates the drone's position based on current RC control values.
 
         :return: None
         """

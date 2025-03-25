@@ -10,12 +10,12 @@ class VideoStream:
     """
     This class represents a HUD for the Tello drone's real-time video stream.
 
-    :ivar _MARGIN: Defining the margin for drawing.
-    :ivar _WHITE_COLOR: Defining the white color for drawing.
-    :ivar _GREEN_COLOR: Defining the green color for drawing.
-    :ivar _YELLOW_COLOR: Defining the yellow color for drawing.
-    :ivar _RED_COLOR: Defining the red color for drawing.
-    :ivar _BLACK_COLOR: Defining the black color for drawing.
+    :ivar _MARGIN: Margin (pixels) used for positioning HUD elements.
+    :ivar _WHITE_COLOR: Standard color (white) for drawing.
+    :ivar _GREEN_COLOR: Status color (green) for safe levels.
+    :ivar _YELLOW_COLOR: Warning color (yellow) indicating caution zones.
+    :ivar _RED_COLOR: Critical status color (red), used for alerts.
+    :ivar _BLACK_COLOR: Color (black) for outlines and contrast-enhancing.
     """
 
     _MARGIN: int = 20
@@ -29,11 +29,11 @@ class VideoStream:
         """
         Initializes and manages a Tello drone HUD window.
 
-        :param drone_object: The Tello drone object.
+        :param drone_object: A connected Tello drone instance from djitellopy.
         :type drone_object: Tello
-        :param window_name: The name of the OpenCV window.
+        :param window_name: The OpenCV window title for the video stream.
         :type window_name: str
-        :param shutdown_flag: The shutdown event flag.
+        :param shutdown_flag: Thread-safe flag to coordinate application shutdown.
         :type shutdown_flag: Event
         """
         self._drone = drone_object
