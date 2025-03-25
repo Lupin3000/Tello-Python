@@ -48,7 +48,8 @@ class Controller:
 
         self._btn = {
             'TAKEOFF': int(section['btn_takeoff_value']),
-            'LANDING': int(section['btn_landing_value'])
+            'LANDING': int(section['btn_landing_value']),
+            'PHOTO': int(section['btn_photo_value']),
         }
 
         self._analog_middle = int(section['analog_middle_value'])
@@ -60,7 +61,8 @@ class Controller:
 
         self._btn_status = {
             'TAKEOFF': False,
-            'LANDING': False
+            'LANDING': False,
+            'PHOTO': False
         }
 
         self._analog_right_stick = {

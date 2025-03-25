@@ -40,6 +40,7 @@ class VideoStream:
         self._window_name = str(window_name)
         self._running = False
         self._shutdown = shutdown_flag
+        self._last_frame = None
 
         register(self._close)
 
@@ -269,6 +270,7 @@ class VideoStream:
             flipped_frame = cv2.flip(rgb_frame, 1)
 
             self._draw_information(frame=flipped_frame)
+            self._last_frame = flipped_frame.copy()
 
             cv2.imshow(self._window_name, flipped_frame)
 
@@ -296,3 +298,9 @@ class VideoStream:
         :return: None
         """
         self._running = False
+
+    def capture_photo(self) -> None:
+        if self._last_frame is not None:
+            print('[INFO] Capture photo from stream.')
+        else:
+            print('[WARNING] No frame from stream captured.')

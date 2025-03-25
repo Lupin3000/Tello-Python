@@ -33,62 +33,72 @@ def signal_handler(sig: int, frame: Optional[FrameType]) -> None:
     raise KeyboardInterrupt
 
 
-def controller_loop(controller_object: Controller, drone_object: TelloDrone) -> None:
+def controller_loop(controller_obj: Controller, drone_obj: TelloDrone, stream_obj: Optional[VideoStream] = None) -> None:
     """
     Controls the main loop driving the interaction between a game controller and a drone.
 
-    :param controller_object: The controller object.
-    :type controller_object: Controller
-    :param drone_object: The drone object.
-    :type drone_object: TelloDrone
+    :param controller_obj: The controller object.
+    :type controller_obj: Controller
+    :param drone_obj: The drone object.
+    :type drone_obj: TelloDrone
+    :param stream_obj: The video stream object.
+    :type stream_obj: Optional[VideoStream]
     :return: None
     """
-    while True:
-        drone_object.reset_rc_speed()
+    photo_triggered = False
 
-        battery = drone_object.drone.get_battery()
+    while True:
+        drone_obj.reset_rc_speed()
+
+        battery = drone_obj.drone.get_battery()
 
         if battery < 5:
             print(f'[INFO] Battery is less {battery} %.')
             break
 
-        btn = controller_object.get_btn_status()
+        btn = controller_obj.get_btn_status()
 
         if btn['TAKEOFF'] and battery > 10:
-            drone_object.start()
+            drone_obj.start()
 
         if btn['LANDING'] or battery < 10:
-            drone_object.land()
+            drone_obj.land()
 
-        stick_right = controller_object.get_analog_right_stick()
+        if btn['PHOTO'] and stream_obj is not None and not photo_triggered:
+            photo_triggered = True
+            stream_obj.capture_photo()
+        elif not btn['PHOTO']:
+            photo_triggered = False
+
+        stick_right = controller_obj.get_analog_right_stick()
 
         if stick_right['forward']:
-            drone_object.speed.forward_backward = SPEED
+            drone_obj.speed.forward_backward = SPEED
 
         if stick_right['backward']:
-            drone_object.speed.forward_backward = -SPEED
+            drone_obj.speed.forward_backward = -SPEED
 
         if stick_right['left']:
-            drone_object.speed.left_right = -SPEED
+            drone_obj.speed.left_right = -SPEED
 
         if stick_right['right']:
-            drone_object.speed.left_right = SPEED
+            drone_obj.speed.left_right = SPEED
 
-        stick_left = controller_object.get_analog_left_stick()
+        stick_left = controller_obj.get_analog_left_stick()
 
         if stick_left['up']:
-            drone_object.speed.up_down = SPEED
+            drone_obj.speed.up_down = SPEED
 
         if stick_left['down']:
-            drone_object.speed.up_down = -SPEED
+            drone_obj.speed.up_down = -SPEED
 
         if stick_left['clockwise']:
-            drone_object.speed.clockwise_counterclockwise = -SPEED
+            drone_obj.speed.clockwise_counterclockwise = -SPEED
 
         if stick_left['counterclockwise']:
-            drone_object.speed.clockwise_counterclockwise = SPEED
+            drone_obj.speed.clockwise_counterclockwise = SPEED
 
-        drone_object.update_position()
+        drone_obj.update_position()
 
         sleep(DELAY)
 
@@ -104,10 +114,11 @@ if __name__ == "__main__":
 
     try:
         if STREAM:
-            controller_thread = Thread(target=controller_loop, args=(controller, tello), daemon=True)
+            stream = VideoStream(drone_object=tello.drone, window_name=WINDOW_NAME, shutdown_flag=SHUTDOWN)
+
+            controller_thread = Thread(target=controller_loop, args=(controller, tello, stream), daemon=True)
             controller_thread.start()
 
-            stream = VideoStream(drone_object=tello.drone, window_name=WINDOW_NAME, shutdown_flag=SHUTDOWN)
             stream.start_stream()
         else:
             controller_loop(controller, tello)
