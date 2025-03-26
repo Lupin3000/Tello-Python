@@ -7,12 +7,13 @@ from threading import Thread, Lock
 from time import sleep
 from typing import Optional
 from hid import device
+from libs.controller_base import BaseController
 
 
 logger = getLogger(__name__)
 
 
-class Controller:
+class HidController(BaseController):
     """
     Manages a controller connection and provides mechanisms to access and update controller states.
 

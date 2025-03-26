@@ -5,14 +5,15 @@ from threading import Thread, Event
 from time import sleep
 from types import FrameType
 from typing import Optional
-from libs.controller import Controller
+from libs.controller_base import BaseController
+from libs.controller_factory import ControllerFactory
 from libs.drone import TelloDrone
 from libs.stream import VideoStream
 
 
 CONTROLLER: str = 'Stadia'
 SPEED: int = 60
-STREAM: bool = True
+STREAM: bool = False
 WINDOW_NAME: str = 'DJI Tello Drone HUD'
 DELAY: float = 0.008
 SHUTDOWN: Event = Event()
@@ -34,7 +35,7 @@ def signal_handler(sig: int, frame: Optional[FrameType]) -> None:
     raise KeyboardInterrupt
 
 
-def controller_loop(controller_obj: Controller, drone_obj: TelloDrone, stream_obj: Optional[VideoStream] = None) -> None:
+def controller_loop(controller_obj: BaseController, drone_obj: TelloDrone, stream_obj: Optional[VideoStream] = None) -> None:
     """
     Controls the main loop driving the interaction between a game controller and a drone.
 
@@ -114,7 +115,8 @@ if __name__ == "__main__":
     controller_thread = None
     stream = None
 
-    controller = Controller(name=CONTROLLER)
+    factory = ControllerFactory()
+    controller = factory.create(name=CONTROLLER)
     tello = TelloDrone()
 
     try:
