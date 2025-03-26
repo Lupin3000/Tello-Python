@@ -9,10 +9,10 @@ from libs.drone import TelloDrone
 from libs.stream import VideoStream
 
 
-CONTROLLER: str = 'stadia'
+CONTROLLER: str = 'Stadia'
 SPEED: int = 60
 STREAM: bool = True
-WINDOW_NAME: str = 'DJI Tello'
+WINDOW_NAME: str = 'DJI Tello Drone HUD'
 DELAY: float = 0.008
 SHUTDOWN: Event = Event()
 
@@ -99,7 +99,6 @@ def controller_loop(controller_obj: Controller, drone_obj: TelloDrone, stream_ob
             drone_obj.speed.clockwise_counterclockwise = SPEED
 
         drone_obj.update_position()
-
         sleep(DELAY)
 
 
@@ -115,10 +114,9 @@ if __name__ == "__main__":
     try:
         if STREAM:
             stream = VideoStream(drone_object=tello.drone, window_name=WINDOW_NAME, shutdown_flag=SHUTDOWN)
-
             controller_thread = Thread(target=controller_loop, args=(controller, tello, stream), daemon=True)
-            controller_thread.start()
 
+            controller_thread.start()
             stream.start_stream()
         else:
             controller_loop(controller, tello)
