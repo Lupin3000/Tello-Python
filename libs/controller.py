@@ -1,3 +1,4 @@
+from logging import getLogger, info, error
 from atexit import register
 from configparser import ConfigParser
 from pathlib import Path
@@ -6,6 +7,9 @@ from threading import Thread, Lock
 from time import sleep
 from typing import Optional
 from hid import device
+
+
+logger = getLogger(__name__)
 
 
 class Controller:
@@ -38,9 +42,9 @@ class Controller:
             self._controller.open(vendor, product)
             self._controller.set_nonblocking(True)
             self._name = self._controller.get_product_string()
-            print(f'[INFO] Connected with "{self._name}" controller.')
+            info(f'Connected with "{self._name}" controller.')
         except Exception as err:
-            print(f'[ERROR] Failed to connect to controller: {err}')
+            error(f'Failed to connect to controller: "{err}".')
             exit(1)
 
         self._report_length = int(section['report_length'])
@@ -92,7 +96,7 @@ class Controller:
         :return: None
         """
         if self._controller:
-            print('[INFO] Disconnect from controller.')
+            info('Disconnect from controller.')
             self._controller.close()
 
     def _set_right_stick_active(self, direction: Optional[str]) -> None:

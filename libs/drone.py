@@ -1,8 +1,12 @@
+from logging import getLogger, info
 from atexit import register
 from time import sleep
 from typing import Optional
 from dataclasses import dataclass
 from djitellopy import Tello
+
+
+logger = getLogger(__name__)
 
 
 @dataclass
@@ -47,7 +51,7 @@ class TelloDrone:
         elif 10 <= speed <= 100:
             self.drone.set_speed(speed)
         else:
-            raise ValueError(f'Invalid speed value: {speed}')
+            raise ValueError(f'Invalid speed value: "{speed}".')
 
         register(self._close)
 
@@ -62,7 +66,7 @@ class TelloDrone:
         """
         if self.drone:
             if not self.grounded:
-                print('[INFO] Force drone landing...')
+                info('Force drone landing.')
                 self.drone.land()
                 self.grounded = True
             self.drone.end()
@@ -74,12 +78,12 @@ class TelloDrone:
         :return: None
         """
         if self.grounded:
-            print('[INFO] Takeoff drone...')
+            info('Takeoff drone.')
             self.drone.takeoff()
             self.grounded = False
 
             sleep(self._DELAY)
-            print('[INFO] Drone is ready to fly.')
+            info('Drone is ready to fly by controller.')
 
     def land(self) -> None:
         """
@@ -88,12 +92,12 @@ class TelloDrone:
         :return: None
         """
         if not self.grounded:
-            print('[INFO] Landing drone...')
+            info('Landing drone.')
             self.drone.land()
             self.grounded = True
 
             sleep(self._DELAY)
-            print('[INFO] Drone is landed.')
+            info('Drone is landed.')
 
     def update_position(self) -> None:
         """

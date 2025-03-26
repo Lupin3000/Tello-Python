@@ -1,3 +1,4 @@
+from logging import getLogger, info, warning
 from atexit import register
 from threading import Event
 from time import strftime
@@ -6,6 +7,9 @@ from typing import Tuple
 import cv2
 import numpy as np
 from djitellopy import Tello
+
+
+logger = getLogger(__name__)
 
 
 class VideoStream:
@@ -194,7 +198,7 @@ class VideoStream:
 
         :return: None
         """
-        print('[INFO] Force stream stop...')
+        info('Force stream stop.')
         self._drone.streamoff()
         cv2.destroyAllWindows()
 
@@ -262,7 +266,7 @@ class VideoStream:
             bgr_frame = frame_reader.frame
 
             if bgr_frame is None:
-                print('[WARNING] No frame received.')
+                warning('No frame received.')
                 continue
 
             if bgr_frame.dtype != np.uint8:
@@ -310,7 +314,7 @@ class VideoStream:
         image = self._last_frame if hasattr(self, "_last_frame") else None
 
         if image is not None:
-            print('[INFO] Capture photo from stream.')
+            info('Capture photo from stream.')
             timestamp = strftime('%Y%m%d_%H%M%S')
             filename = f'photo_{timestamp}.png'
             target_path = Path('photos')
@@ -319,7 +323,7 @@ class VideoStream:
             filename = target_path / filename
 
             cv2.imwrite(str(filename), image)
-            print(f'[INFO] Photo saved to "{filename}".')
+            info(f'Photo saved to "{filename}".')
 
         else:
-            print('[WARNING] No frame from stream captured.')
+            warning('No frame from stream captured.')

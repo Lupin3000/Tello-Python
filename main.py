@@ -1,3 +1,4 @@
+from logging import basicConfig, info
 from signal import signal, SIGINT
 from sys import exit
 from threading import Thread, Event
@@ -29,7 +30,7 @@ def signal_handler(sig: int, frame: Optional[FrameType]) -> None:
     """
     _ = frame
 
-    print(f'[INFO] Signal "{sig}" received.')
+    info(f'Signal: "{sig}" received.')
     raise KeyboardInterrupt
 
 
@@ -53,7 +54,7 @@ def controller_loop(controller_obj: Controller, drone_obj: TelloDrone, stream_ob
         battery = drone_obj.drone.get_battery()
 
         if battery < 5:
-            print(f'[INFO] Battery is less {battery} %.')
+            info(f'[INFO] Battery is less "{battery}%".')
             break
 
         btn = controller_obj.get_btn_status()
@@ -103,6 +104,11 @@ def controller_loop(controller_obj: Controller, drone_obj: TelloDrone, stream_ob
 
 
 if __name__ == "__main__":
+    basicConfig(
+        level='INFO',
+        format='[%(levelname)s] %(message)s'
+    )
+
     signal(SIGINT, signal_handler)
 
     controller_thread = None
@@ -121,7 +127,7 @@ if __name__ == "__main__":
         else:
             controller_loop(controller, tello)
     except KeyboardInterrupt:
-        print('[INFO] Application stopped by user.')
+        info('Application stopped by user.')
     finally:
         if STREAM:
             SHUTDOWN.set()
