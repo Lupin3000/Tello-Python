@@ -22,6 +22,8 @@ The code is written and tested with following requirements:
 
 ### Prepare Python project
 
+### macOS
+
 ```shell
 # clone repository
 $ git clone https://github.com/Lupin3000/Tello-Python.git
@@ -39,7 +41,54 @@ $ source venv/bin/activate
 (venv) $ pip3 install -U pip
 
 # install required dependencies
-(venv) $ pip3 install -r requirements.txt
+(venv) $ pip3 install -r macos-requirements.txt
+
+# show packages (optional)
+(venv) $ pip3 freeze
+```
+
+### Linux (_Debian12_)
+
+**root**
+
+The root user should install required system-wide Python packages and allow permissions to `/dev/input/*`.
+
+```shell
+# update packages (optional)
+$ apt update && apt upgrade -y
+
+# install required packages
+$ apt install -y apt install python3-venv python3-pip libgl1
+
+# provide user permissions to /dev/input/*
+$ usermod -aG input [USERNAME]
+```
+
+**user**
+
+The user should install required project Python packages via virtualenv.
+
+```shell
+# clone repository
+$ git clone https://github.com/Lupin3000/Tello-Python.git
+
+# change into cloned root directory
+$ cd Tello-Python/
+
+# create Python virtualenv (optional but recommended)
+$ python3 -m venv venv
+
+# activate Python virtualenv
+$ source venv/bin/activate
+
+# update pip (optional)
+(venv) $ pip3 install -U pip
+
+# install required dependencies
+(venv) $ pip3 install -r linux-requirements.txt
+
+# show packages (optional)
+(venv) $ pip3 freeze
 ```
 
 ## Usage
@@ -96,6 +145,6 @@ Currently, this project is only fully supported on macOS. Users on other operati
 
 ### Open items
 
-- Linux compatibility (_via Python evdev_)
+- Linux compatibility (_via Python evdev_) -> in development
 - Record video by controller buttons
 - Add drone actions (_like flip_) by controller buttons

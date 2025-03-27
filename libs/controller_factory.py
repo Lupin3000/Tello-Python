@@ -1,7 +1,6 @@
 from logging import getLogger, info
 from platform import system
 from libs.controller_base import BaseController
-from libs.controller_hid import HidController
 
 
 logger = getLogger(__name__)
@@ -29,6 +28,11 @@ class ControllerFactory:
         """
         if self._system_name == 'Darwin':
             info('Using Python hidapi controller.')
+            from libs.controller_hid import HidController
             return HidController(name=name)
+        elif self._system_name == 'Linux':
+            info('Using Python evdev controller.')
+            from libs.controller_evdev import EvDevController
+            return EvDevController(name=name)
         else:
             raise OSError(f'Unsupported system: "{self._system_name}".')

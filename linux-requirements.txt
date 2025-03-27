@@ -1,0 +1,6 @@
+setuptools==77.0.3
+wheel==0.45.1
+evdev==1.9.1
+numpy==2.2.4
+opencv-python==4.11.0.86
+djitellopy==2.5.0
