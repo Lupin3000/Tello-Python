@@ -12,6 +12,16 @@ class BaseController(ABC):
     def _close(self) -> None:
         """
         Closes the connection to the controller and performs necessary cleanup.
+
+        :return: None
+        """
+        pass
+
+    @abstractmethod
+    def _read_controller(self) -> None:
+        """
+        Reading the controller's state.
+
         :return: None
         """
         pass
