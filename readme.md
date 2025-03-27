@@ -12,10 +12,11 @@ The owner of this project assumes no responsibility for any damage, issues, or l
 
 ### Minimum requirements
 
-The code is written and tested with following requirements:
+The code is written and tested on macOS Sequoia/Debian 12 with following requirements:
 
 [![Static](https://img.shields.io/badge/python->=3.12.x-green)](https://python.org)
 [![Static](https://img.shields.io/badge/hidapi-==0.14.0-green)](https://github.com/trezor/cython-hidapi)
+[![Static](https://img.shields.io/badge/evdev-==1.9.1-green)](https://github.com/gvalkov/python-evdev)
 [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy)
 [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)
 [![Static](https://img.shields.io/badge/numpy-==2.2.4-green)](https://numpy.org)
@@ -47,7 +48,7 @@ $ source venv/bin/activate
 (venv) $ pip3 freeze
 ```
 
-### Linux (_Debian12_)
+### Linux
 
 **root**
 
