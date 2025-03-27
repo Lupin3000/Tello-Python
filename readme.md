@@ -153,5 +153,4 @@ Currently, this project is only fully supported on macOS. Users on other operati
 ### Open items
 
 - Linux compatibility (_via Python evdev_) -> in development
-- Record video by controller buttons
-- Add drone actions (_like flip_) by controller buttons
+- Add more controller actions (_eq. drone flip, video recording, etc._)
