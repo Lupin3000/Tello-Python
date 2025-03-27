@@ -69,8 +69,6 @@ $ source venv/bin/activate
 
 > You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
-### Preset controller configuration
-
 - **Stadia [Y] - DualSense [&#x25B2;]:** for drone takeoff.
 - **Stadia [A] - DualSense [X]:** for drone landing.
 - **Stadia [X] - DualSense [&#x25FC;]:** for capture a photo (_picture will be saved as PNG into directory "photos"_).
