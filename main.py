@@ -13,7 +13,7 @@ from libs.stream import VideoStream
 
 CONTROLLER: str = 'Stadia'
 SPEED: int = 60
-STREAM: bool = False
+STREAM: bool = True
 WINDOW_NAME: str = 'DJI Tello Drone HUD'
 DELAY: float = 0.008
 SHUTDOWN: Event = Event()
