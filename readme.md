@@ -122,8 +122,8 @@ $ source venv/bin/activate
 
 **Controllers**
 
-- **hidapi:** Google Stadia-Controller
-- **hidapi:** Sony DualSense Wireless Controller
+- **macOS (_hidapi_):** Google Stadia-Controller
+- **macOS (_hidapi_):** Sony DualSense Wireless Controller
 
 **Assignment**
 
