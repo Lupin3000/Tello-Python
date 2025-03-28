@@ -135,6 +135,10 @@ $ source venv/bin/activate
 
 > The photos are created as PNG files (_with timestamp in name_) during the live stream. The resolution and quality therefore depend on the live stream. The `photos` folder will be created automatically if it doesn't already exist. If you turn off the stream, you cannot save pictures!
 
+### Own configuration
+
+**Controller**
+
 > You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
 Linux (evdev)
@@ -146,7 +150,7 @@ If you use Python evdev, you can find out the controller configuration very quic
 (venv) $ python3 -m evdev.evtest
 ```
 
-### Own configuration
+**Constants**
 
 Inside file `main.py` you can modify following constants:
 
