@@ -5,7 +5,7 @@ from pathlib import Path
 from sys import exit
 from threading import Thread, Lock
 from typing import Optional
-from evdev import InputDevice, list_devices
+from evdev import InputDevice, list_devices, ecodes
 from libs.controller_base import BaseController
 
 
@@ -40,6 +40,15 @@ class EvDevController(BaseController):
         # missing implementation
         print('[DEVELOPMENT] Missing implementation application stopping.')
         exit(1)
+
+        self._analog_middle = int(section['analog_middle_value'])
+        self._analog_threshold = int(section['analog_threshold_value'])
+
+        self._btn = {
+            'TAKEOFF': int(section['btn_takeoff_value']),
+            'LANDING': int(section['btn_landing_value']),
+            'PHOTO': int(section['btn_photo_value'])
+        }
 
         self._btn_status = {
             'TAKEOFF': False,
@@ -98,7 +107,17 @@ class EvDevController(BaseController):
 
         :return: None
         """
-        pass
+        try:
+            for event in self._controller.read_loop():
+                if event.type == ecodes.EV_KEY:
+                    for btn_name, btn_code in self._btn.items():
+                        if event.code == btn_code:
+                            if event.value == 1:
+                                self._btn_status[btn_name] = True
+                            elif event.value == 0:
+                                self._btn_status[btn_name] = False
+        except Exception as err:
+            error(f'Controller event error: {err}')
 
     def get_btn_status(self) -> dict:
         """

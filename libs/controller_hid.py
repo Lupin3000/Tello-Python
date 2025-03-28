@@ -54,7 +54,7 @@ class HidController(BaseController):
         self._btn = {
             'TAKEOFF': int(section['btn_takeoff_value']),
             'LANDING': int(section['btn_landing_value']),
-            'PHOTO': int(section['btn_photo_value']),
+            'PHOTO': int(section['btn_photo_value'])
         }
 
         self._analog_middle = int(section['analog_middle_value'])
