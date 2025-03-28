@@ -143,6 +143,48 @@ class BaseController(ABC):
         with self._lock:
             return self._analog_left_stick.copy()
 
+    def _evaluate_analog_sticks(self) -> None:
+        """
+        Interprets analog stick input based on axis values and updates the stick state.
+
+        :return: None
+        """
+        right_x = self._axis_values['right_x']
+        right_y = self._axis_values['right_y']
+
+        if abs(right_x - self._analog_middle) > abs(right_y - self._analog_middle):
+            if right_x + self._analog_threshold < self._analog_middle:
+                self._set_right_stick_active("left")
+            elif right_x - self._analog_threshold > self._analog_middle:
+                self._set_right_stick_active("right")
+            else:
+                self._set_right_stick_active(None)
+        else:
+            if right_y + self._analog_threshold < self._analog_middle:
+                self._set_right_stick_active("forward")
+            elif right_y - self._analog_threshold > self._analog_middle:
+                self._set_right_stick_active("backward")
+            else:
+                self._set_right_stick_active(None)
+
+        left_x = self._axis_values['left_x']
+        left_y = self._axis_values['left_y']
+
+        if abs(left_x - self._analog_middle) > abs(left_y - self._analog_middle):
+            if left_x + self._analog_threshold < self._analog_middle:
+                self._set_left_stick_active("counterclockwise")
+            elif left_x - self._analog_threshold > self._analog_middle:
+                self._set_left_stick_active("clockwise")
+            else:
+                self._set_left_stick_active(None)
+        else:
+            if left_y + self._analog_threshold < self._analog_middle:
+                self._set_left_stick_active("up")
+            elif left_y - self._analog_threshold > self._analog_middle:
+                self._set_left_stick_active("down")
+            else:
+                self._set_left_stick_active(None)
+
     def __del__(self):
         """
         Ensures proper cleanup when the controller object is garbage-collected.

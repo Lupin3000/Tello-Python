@@ -88,6 +88,13 @@ class HidController(BaseController):
         except AttributeError:
             raise ValueError(f'Failed to load correct analog stick configuration.')
 
+        self._axis_values = {
+            'left_x': self._analog_middle,
+            'left_y': self._analog_middle,
+            'right_x': self._analog_middle,
+            'right_y': self._analog_middle
+        }
+
 
     def _close(self) -> None:
         """
@@ -115,40 +122,10 @@ class HidController(BaseController):
                     for key in self._btn.keys():
                         self._btn_status[key] = btn_state == self._btn[key]
 
-                    right_x = data[self._axis_right_x]
-                    right_y = data[self._axis_right_y]
-
-                    if abs(right_x - self._analog_middle) > abs(right_y - self._analog_middle):
-                        if right_x + self._analog_threshold < self._analog_middle:
-                            self._set_right_stick_active("left")
-                        elif right_x - self._analog_threshold > self._analog_middle:
-                            self._set_right_stick_active("right")
-                        else:
-                            self._set_right_stick_active(None)
-                    else:
-                        if right_y + self._analog_threshold < self._analog_middle:
-                            self._set_right_stick_active("forward")
-                        elif right_y - self._analog_threshold > self._analog_middle:
-                            self._set_right_stick_active("backward")
-                        else:
-                            self._set_right_stick_active(None)
-
-                    left_x = data[self._axis_left_x]
-                    left_y = data[self._axis_left_y]
-
-                    if abs(left_x - self._analog_middle) > abs(left_y - self._analog_middle):
-                        if left_x + self._analog_threshold < self._analog_middle:
-                            self._set_left_stick_active("counterclockwise")
-                        elif left_x - self._analog_threshold > self._analog_middle:
-                            self._set_left_stick_active("clockwise")
-                        else:
-                            self._set_left_stick_active(None)
-                    else:
-                        if left_y + self._analog_threshold < self._analog_middle:
-                            self._set_left_stick_active("up")
-                        elif left_y - self._analog_threshold > self._analog_middle:
-                            self._set_left_stick_active("down")
-                        else:
-                            self._set_left_stick_active(None)
+                    self._axis_values['right_x'] = data[self._axis_right_x]
+                    self._axis_values['right_y'] = data[self._axis_right_y]
+                    self._axis_values['left_x'] = data[self._axis_left_x]
+                    self._axis_values['left_y'] = data[self._axis_left_y]
+                    self._evaluate_analog_sticks()
 
             sleep(self._DELAY)
