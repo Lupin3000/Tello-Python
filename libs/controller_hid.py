@@ -52,6 +52,7 @@ class HidController(BaseController):
         :raises ValueError: If any required configuration sections are missing.
         :return: None
         """
+        info('Loading controller configuration.')
         config_path = (Path(__file__).parent.parent / "config" / self._configuration_file_name)
 
         if not config_path.exists():
@@ -75,6 +76,7 @@ class HidController(BaseController):
         :raises Exception: If the connection to the controller fails.
         :return: None
         """
+        info('Connecting to controller.')
         identification_section = self._config['Identification']
         vendor = int(identification_section['vendor'])
         product = int(identification_section['product'])
@@ -97,6 +99,7 @@ class HidController(BaseController):
 
         :return: None
         """
+        info('Initializing controller steering.')
         identification_section = self._config['Identification']
         self._report_length = int(identification_section['report_length'])
 
