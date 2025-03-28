@@ -117,14 +117,23 @@ class EvDevController(BaseController):
         """
         try:
             for event in self._controller.read_loop():
-                if event.type == ecodes.EV_KEY:
-                    for btn_name, btn_code in self._btn.items():
-                        if event.code == btn_code:
-                            if event.value == 1:
-                                self._btn_status[btn_name] = True
-                            elif event.value == 0:
-                                self._btn_status[btn_name] = False
+                with self._lock:
+                    if event.type == ecodes.EV_KEY:
+                        for btn_name, btn_code in self._btn.items():
+                            if event.code == btn_code:
+                                if event.value == 1:
+                                    self._btn_status[btn_name] = True
+                                elif event.value == 0:
+                                    self._btn_status[btn_name] = False
 
-                # missing implementation
+                    elif event.type == ecodes.EV_ABS:
+                        if event.code == self._axis_right_x:
+                            pass
+                        elif event.code == self._axis_right_y:
+                            pass
+                        elif event.code == self._axis_left_x:
+                            pass
+                        elif event.code == self._axis_left_y:
+                            pass
         except Exception as err:
             error(f'Controller event error: {err}')

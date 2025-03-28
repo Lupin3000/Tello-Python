@@ -4,7 +4,7 @@ from atexit import register
 from configparser import ConfigParser
 from pathlib import Path
 from threading import Thread, Lock
-from typing import Dict
+from typing import Dict, Optional
 
 
 logger = getLogger(__name__)
@@ -85,31 +85,33 @@ class BaseController(ABC):
 
         self._config = config
 
-    @abstractmethod
-    def _connect_to_controller(self) -> None:
-        pass
-
-    @abstractmethod
-    def _initialize_steering(self) -> None:
-        pass
-
-    @abstractmethod
-    def _close(self) -> None:
+    def _set_right_stick_active(self, direction: Optional[str]) -> None:
         """
-        Closes the connection to the controller and performs necessary cleanup.
+        Sets the state of the right stick to be active in the specified direction.
 
+        :param direction: The direction to set the right analog stick to be active.
+        :type direction: Optional[str]
         :return: None
         """
-        pass
+        for key in self._analog_right_stick.keys():
+            self._analog_right_stick[key] = False
 
-    @abstractmethod
-    def _read_controller(self) -> None:
+        if direction is not None:
+            self._analog_right_stick[direction] = True
+
+    def _set_left_stick_active(self, direction: Optional[str]) -> None:
         """
-        Reading the controller's state.
+        Sets the state of the left stick to be active in the specified direction.
 
+        :param direction: The direction to set the left analog stick to be active.
+        :type direction: Optional[str]
         :return: None
         """
-        pass
+        for key in self._analog_left_stick.keys():
+            self._analog_left_stick[key] = False
+
+        if direction is not None:
+            self._analog_left_stick[direction] = True
 
     def get_btn_status(self) -> Dict[str, bool]:
         """
@@ -146,3 +148,29 @@ class BaseController(ABC):
         Ensures proper cleanup when the controller object is garbage-collected.
         """
         self._close()
+
+    @abstractmethod
+    def _connect_to_controller(self) -> None:
+        pass
+
+    @abstractmethod
+    def _initialize_steering(self) -> None:
+        pass
+
+    @abstractmethod
+    def _close(self) -> None:
+        """
+        Closes the connection to the controller and performs necessary cleanup.
+
+        :return: None
+        """
+        pass
+
+    @abstractmethod
+    def _read_controller(self) -> None:
+        """
+        Reading the controller's state.
+
+        :return: None
+        """
+        pass

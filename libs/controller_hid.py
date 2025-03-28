@@ -1,7 +1,6 @@
 from logging import getLogger, info, error
 from sys import exit
 from time import sleep
-from typing import Optional
 from hid import device
 from libs.controller_base import BaseController
 
@@ -99,34 +98,6 @@ class HidController(BaseController):
         if self._controller:
             info('Disconnect from controller.')
             self._controller.close()
-
-    def _set_right_stick_active(self, direction: Optional[str]) -> None:
-        """
-        Sets the state of the right stick to be active in the specified direction.
-
-        :param direction: The direction to set the right analog stick to be active.
-        :type direction: Optional[str]
-        :return: None
-        """
-        for key in self._analog_right_stick.keys():
-            self._analog_right_stick[key] = False
-
-        if direction is not None:
-            self._analog_right_stick[direction] = True
-
-    def _set_left_stick_active(self, direction: Optional[str]) -> None:
-        """
-        Sets the state of the left stick to be active in the specified direction.
-
-        :param direction: The direction to set the left analog stick to be active.
-        :type direction: Optional[str]
-        :return: None
-        """
-        for key in self._analog_left_stick.keys():
-            self._analog_left_stick[key] = False
-
-        if direction is not None:
-            self._analog_left_stick[direction] = True
 
     def _read_controller(self) -> None:
         """
