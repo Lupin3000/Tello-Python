@@ -16,9 +16,11 @@ class BaseController(ABC):
     Defines the interface that each controller must implement.
 
     :ivar _REQUIRED_SECTIONS: A list of required sections in the configuration file.
+    :ivar _AXIS_KEYS: A list of axis keys for analog stick mapping.
     """
 
     _REQUIRED_SECTIONS = ['Identification', 'Buttons', 'AnalogSticks']
+    _AXIS_KEYS = ['left_x', 'left_y', 'right_x', 'right_y']
 
     def __init__(self, file_name: str):
         """
@@ -31,6 +33,9 @@ class BaseController(ABC):
         self._configuration_file_name = str(file_name)
         self._config = None
         self._controller = None
+        self._analog_middle = None
+        self._analog_threshold = None
+        self._axis_values = {key: 0 for key in self._AXIS_KEYS}
 
         self._load_controller_configuration()
         self._connect_to_controller()
@@ -193,10 +198,20 @@ class BaseController(ABC):
 
     @abstractmethod
     def _connect_to_controller(self) -> None:
+        """
+        Establishes a connection to a specified controller.
+
+        :return: None
+        """
         pass
 
     @abstractmethod
     def _initialize_steering(self) -> None:
+        """
+        Initializes the steering functionality.
+
+        :return: None
+        """
         pass
 
     @abstractmethod

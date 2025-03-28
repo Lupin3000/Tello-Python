@@ -14,11 +14,14 @@ class EvDevController(BaseController):
     """
 
     def __init__(self, file_name: str):
-        super().__init__(file_name)
+        """
+        Represents a controller interface for handling configuration, connections, and
+        interaction with a controller device via evdev.
 
-        # missing implementation
-        print('[DEVELOPMENT] Missing implementation application stopping.')
-        exit(1)
+        :param file_name: The configuration file name for the controller.
+        :type file_name: str
+        """
+        super().__init__(file_name)
 
     @staticmethod
     def _search_device(name: str) -> Optional[str]:
