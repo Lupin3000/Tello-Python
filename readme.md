@@ -127,7 +127,7 @@ $ source venv/bin/activate
 | macOS | Google Stadia-Controller           | stadia_macos.ini    |
 | macOS | Sony DualSense Wireless Controller | dualsense_macos.ini |
 | Linux | Google Stadia-Controller           | stadia_linux.ini    |
-| Linux | Sony DualSense Wireless Controller | stadia_linux.ini    |
+| Linux | Sony DualSense Wireless Controller | dualsense_linux.ini |
 
 **Assignment**
 
