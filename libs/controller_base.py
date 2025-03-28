@@ -6,7 +6,11 @@ class BaseController(ABC):
     """
     Abstract base class for all controller implementations.
     Defines the interface that each controller must implement.
+
+    :ivar _REQUIRED_SECTIONS: A list of required sections in the configuration file.
     """
+
+    _REQUIRED_SECTIONS = ['Identification', 'Buttons', 'AnalogSticks']
 
     @abstractmethod
     def _close(self) -> None:

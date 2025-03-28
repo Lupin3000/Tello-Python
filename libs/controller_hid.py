@@ -24,20 +24,60 @@ class HidController(BaseController):
 
     def __init__(self, file_name: str):
         """
-        Initialize a controller connection and set up attributes to manage controller states,
-        button statuses, and analog stick movements. This method attempts to connect to the
-        specified controller using the provided vendor and product IDs.
+        Represents a controller interface for handling configuration, connections, and
+        interaction with a controller device via hidapi.
 
-        :param file_name: The configuration file name of the controller.
+        :param file_name: The configuration file name for the controller.
         :type file_name: str
         """
-        config = ConfigParser()
-        config.read(Path(__file__).parent.parent / "config" / file_name)
+        self._configuration_file_name = str(file_name)
+        self._config = None
+        self._controller = None
 
-        identification_section = config['Identification']
+        self._load_controller_configuration()
+        self._connect_to_controller()
+        self._initialize_steering()
+
+        register(self._close)
+
+        self._lock = Lock()
+        self._thread = Thread(target=self._read_controller, daemon=True)
+        self._thread.start()
+
+    def _load_controller_configuration(self) -> None:
+        """
+        Loads and initializes the controller configuration.
+
+        :raises FileNotFoundError: If the configuration file is not found.
+        :raises ValueError: If any required configuration sections are missing.
+        :return: None
+        """
+        config_path = (Path(__file__).parent.parent / "config" / self._configuration_file_name)
+
+        if not config_path.exists():
+            raise FileNotFoundError(f'Configuration file "{config_path}" not found.')
+
+        config = ConfigParser(strict=True)
+        config.read(config_path)
+
+        for section in self._REQUIRED_SECTIONS:
+            if section not in config:
+                raise ValueError(f'Missing config section: {section}')
+
+        self._config = config
+
+    def _connect_to_controller(self) -> None:
+        """
+        Attempts to connect to the controller device using configuration values
+        for vendor and product IDs, initializes the controller object, and sets
+        it to non-blocking mode.
+
+        :raises Exception: If the connection to the controller fails.
+        :return: None
+        """
+        identification_section = self._config['Identification']
         vendor = int(identification_section['vendor'])
         product = int(identification_section['product'])
-        self._report_length = int(identification_section['report_length'])
 
         try:
             self._controller = device()
@@ -49,28 +89,30 @@ class HidController(BaseController):
             error(f'Failed to connect to controller: "{err}".')
             exit(1)
 
-        btn_section = config['Buttons']
+    def _initialize_steering(self) -> None:
+        """
+        Initializes the steering configuration for various control parameters. This
+        method sets up the internal properties such as button statuses, analog stick
+        mappings, and other configuration details necessary for steering operations.
+
+        :return: None
+        """
+        identification_section = self._config['Identification']
+        self._report_length = int(identification_section['report_length'])
+
+        self._btn_status = {
+            'TAKEOFF': False,
+            'LANDING': False,
+            'PHOTO': False
+        }
+
+        btn_section = self._config['Buttons']
         self._btn_byte_index = int(btn_section['btn_byte_index'])
 
         self._btn = {
             'TAKEOFF': int(btn_section['btn_takeoff_value']),
             'LANDING': int(btn_section['btn_landing_value']),
             'PHOTO': int(btn_section['btn_photo_value'])
-        }
-
-        analog_section = config['AnalogSticks']
-
-        self._analog_middle = int(analog_section['analog_middle_value'])
-        self._analog_threshold = int(analog_section['analog_threshold_value'])
-        self._axis_left_x = int(analog_section['analog_left_x_index'])
-        self._axis_left_y = int(analog_section['analog_left_y_index'])
-        self._axis_right_x = int(analog_section['analog_right_x_index'])
-        self._axis_right_y = int(analog_section['analog_right_y_index'])
-
-        self._btn_status = {
-            'TAKEOFF': False,
-            'LANDING': False,
-            'PHOTO': False
         }
 
         self._analog_right_stick = {
@@ -87,11 +129,15 @@ class HidController(BaseController):
             "counterclockwise": False
         }
 
-        register(self._close)
+        analog_section = self._config['AnalogSticks']
 
-        self._lock = Lock()
-        self._thread = Thread(target=self._read_controller, daemon=True)
-        self._thread.start()
+        self._analog_middle = int(analog_section['analog_middle_value'])
+        self._analog_threshold = int(analog_section['analog_threshold_value'])
+        self._axis_left_x = int(analog_section['analog_left_x_index'])
+        self._axis_left_y = int(analog_section['analog_left_y_index'])
+        self._axis_right_x = int(analog_section['analog_right_x_index'])
+        self._axis_right_y = int(analog_section['analog_right_y_index'])
+
 
     def _close(self) -> None:
         """
