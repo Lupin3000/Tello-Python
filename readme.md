@@ -27,9 +27,7 @@ The code is written and tested with following requirements:
 | Debian 12     | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
 | Debian 12     | [![Static](https://img.shields.io/badge/numpy-==2.2.4-green)](https://numpy.org)                               |
 
-### Prepare Python project
-
-### macOS
+### Quick installation
 
 ```shell
 # clone repository
@@ -48,55 +46,13 @@ $ source venv/bin/activate
 (venv) $ pip3 install -U pip
 
 # install required dependencies
-(venv) $ pip3 install -r macos-requirements.txt
+(venv) $ pip3 install -r <SYSTEM>-requirements.txt
 
 # show packages (optional)
 (venv) $ pip3 freeze
 ```
 
-### Linux
-
-**root**
-
-The root user should install required system-wide Python packages and allow permissions to `/dev/input/*`.
-
-```shell
-# update packages (optional)
-$ apt update && apt upgrade -y
-
-# install required packages
-$ apt install -y apt install python3-venv python3-pip libgl1
-
-# provide user permissions to /dev/input/*
-$ usermod -aG input [USERNAME]
-```
-
-**user**
-
-The user should install required project Python packages via virtualenv.
-
-```shell
-# clone repository
-$ git clone https://github.com/Lupin3000/Tello-Python.git
-
-# change into cloned root directory
-$ cd Tello-Python/
-
-# create Python virtualenv (optional but recommended)
-$ python3 -m venv venv
-
-# activate Python virtualenv
-$ source venv/bin/activate
-
-# update pip (optional)
-(venv) $ pip3 install -U pip
-
-# install required dependencies
-(venv) $ pip3 install -r linux-requirements.txt
-
-# show packages (optional)
-(venv) $ pip3 freeze
-```
+> For more details, have a look on the [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/Installation).
 
 ## Usage
 
