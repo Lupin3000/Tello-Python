@@ -141,7 +141,7 @@ $ source venv/bin/activate
 
 > You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
 
-Linux (evdev)
+**Python evdev**
 
 If you use Python evdev, you can find out the controller configuration very quickly with just one command!
 
