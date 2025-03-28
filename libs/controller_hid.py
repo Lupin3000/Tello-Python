@@ -58,6 +58,7 @@ class HidController(BaseController):
         method sets up the internal properties such as button statuses, analog stick
         mappings, and other configuration details necessary for steering operations.
 
+        :raises ValueError: If any required configuration section values are missing.
         :return: None
         """
         info('Initializing controller steering.')
@@ -67,20 +68,26 @@ class HidController(BaseController):
         btn_section = self._config['Buttons']
         self._btn_byte_index = int(btn_section['btn_byte_index'])
 
-        self._btn = {
-            'TAKEOFF': int(btn_section['btn_takeoff_value']),
-            'LANDING': int(btn_section['btn_landing_value']),
-            'PHOTO': int(btn_section['btn_photo_value'])
-        }
+        try:
+            self._btn = {
+                'TAKEOFF': int(btn_section['btn_takeoff_value']),
+                'LANDING': int(btn_section['btn_landing_value']),
+                'PHOTO': int(btn_section['btn_photo_value'])
+            }
+        except AttributeError:
+            raise ValueError(f'Failed to load correct button configuration.')
 
         analog_section = self._config['AnalogSticks']
 
-        self._analog_middle = int(analog_section['analog_middle_value'])
-        self._analog_threshold = int(analog_section['analog_threshold_value'])
-        self._axis_left_x = int(analog_section['analog_left_x_index'])
-        self._axis_left_y = int(analog_section['analog_left_y_index'])
-        self._axis_right_x = int(analog_section['analog_right_x_index'])
-        self._axis_right_y = int(analog_section['analog_right_y_index'])
+        try:
+            self._analog_middle = int(analog_section['analog_middle_value'])
+            self._analog_threshold = int(analog_section['analog_threshold_value'])
+            self._axis_left_x = int(analog_section['analog_left_x_index'])
+            self._axis_left_y = int(analog_section['analog_left_y_index'])
+            self._axis_right_x = int(analog_section['analog_right_x_index'])
+            self._axis_right_y = int(analog_section['analog_right_y_index'])
+        except AttributeError:
+            raise ValueError(f'Failed to load correct analog stick configuration.')
 
 
     def _close(self) -> None:

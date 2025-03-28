@@ -20,43 +20,84 @@ class EvDevController(BaseController):
         print('[DEVELOPMENT] Missing implementation application stopping.')
         exit(1)
 
-    def _search_device(self) -> Optional[str]:
-        #found_devices = []
-        #
-        #input_paths = list_devices()
-        #for path in input_paths:
-        #    device = InputDevice(path)
-        #    if self._controller_name.lower() in device.name.lower():
-        #        found_devices.append((device.name, path))
-        #
-        #if found_devices:
-        #    return found_devices[0][1]
-        #else:
-        #    error('No controller found.')
-        #    return None
-        pass
+    @staticmethod
+    def _search_device(name: str) -> Optional[str]:
+        """
+        Searches for an input device by its name and returns the corresponding device path if found.
+
+        :param name: The name of the device to search for.
+        :type name: str
+        :return: The path of the first matching input device, if found.
+        :rtype: Optional[str]
+        """
+        found_devices = []
+        input_paths = list_devices()
+
+        info(f'Searching for controller "{name}".')
+        for path in input_paths:
+            device = InputDevice(path)
+            if name.lower() in device.name.lower():
+                found_devices.append((device.name, path))
+
+        if found_devices:
+            return found_devices[0][1]
+        else:
+            error(f'Controller "{name}" not found.')
+            exit(1)
 
     def _connect_to_controller(self) -> None:
-        #self._controller_name = file_name
-        #self._controller_path = self._search_device()
-        #
-        #try:
-        #    self._controller = InputDevice(self._controller_path)
-        #    info(f'Connected with "{self._controller.name}" controller.')
-        #except Exception as err:
-        #    error(f'Failed to connect to controller: "{err}".')
-        #    exit(1)
-        pass
+        """
+        Attempts to connect to the controller device using the configuration value
+        for name, initializes the controller object.
+
+        :raises Exception: If the connection to the controller fails.
+        :return: None
+        """
+        info('Connecting to controller.')
+        identification_section = self._config['Identification']
+        controller_name = identification_section['name']
+        controller_path = EvDevController._search_device(name=controller_name)
+
+        try:
+            self._controller = InputDevice(controller_path)
+            info(f'Connected with "{self._controller.name}" controller.')
+        except Exception as err:
+            error(f'Failed to connect to controller: "{err}".')
+            exit(1)
 
     def _initialize_steering(self) -> None:
+        """
+        Initializes the steering configuration for various control parameters. This
+        method sets up the internal properties such as button statuses, analog stick
+        mappings, and other configuration details necessary for steering operations.
+
+        :raises ValueError: If any required configuration section values are missing.
+        :return: None
+        """
         info('Initializing controller steering.')
 
         btn_section = self._config['Buttons']
-        self._btn = {
-            'TAKEOFF': int(btn_section['btn_takeoff_value']),
-            'LANDING': int(btn_section['btn_landing_value']),
-            'PHOTO': int(btn_section['btn_photo_value'])
-        }
+
+        try:
+            self._btn = {
+                'TAKEOFF': int(btn_section['btn_takeoff_value']),
+                'LANDING': int(btn_section['btn_landing_value']),
+                'PHOTO': int(btn_section['btn_photo_value'])
+            }
+        except AttributeError:
+            raise ValueError(f'Failed to load correct button configuration.')
+
+        analog_section = self._config['AnalogSticks']
+
+        try:
+            self._analog_middle = int(analog_section['analog_middle_value'])
+            self._analog_threshold = int(analog_section['analog_threshold_value'])
+            self._axis_left_x = getattr(ecodes, analog_section['analog_left_x_index'])
+            self._axis_left_y = getattr(ecodes, analog_section['analog_left_y_index'])
+            self._axis_right_x = getattr(ecodes, analog_section['analog_right_x_index'])
+            self._axis_right_y = getattr(ecodes, analog_section['analog_right_y_index'])
+        except AttributeError:
+            raise ValueError(f'Failed to load correct analog stick configuration.')
 
     def _close(self) -> None:
         """
@@ -83,5 +124,7 @@ class EvDevController(BaseController):
                                 self._btn_status[btn_name] = True
                             elif event.value == 0:
                                 self._btn_status[btn_name] = False
+
+                # missing implementation
         except Exception as err:
             error(f'Controller event error: {err}')
