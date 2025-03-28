@@ -124,8 +124,10 @@ $ source venv/bin/activate
 
 | OS    | Controller                         | Configuration       |
 |-------|------------------------------------|---------------------|
-| macos | Google Stadia-Controller           | stadia_macos.ini    |
-| macos | Sony DualSense Wireless Controller | dualsense_macos.ini |
+| macOS | Google Stadia-Controller           | stadia_macos.ini    |
+| macOS | Sony DualSense Wireless Controller | dualsense_macos.ini |
+| Linux | Google Stadia-Controller           | stadia_linux.ini    |
+| Linux | Sony DualSense Wireless Controller | stadia_linux.ini    |
 
 **Assignment**
 
@@ -171,5 +173,5 @@ Currently, this project is only fully supported on macOS. Users on other operati
 
 ### Open items
 
-- Linux compatibility (_via Python evdev_) -> in development
+- Linux compatibility (_via Python evdev_) -> in testing
 - Add more controller actions (_eq. drone flip, video recording, etc._)
