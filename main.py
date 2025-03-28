@@ -55,7 +55,7 @@ def controller_loop(controller_obj: BaseController, drone_obj: TelloDrone, strea
         battery = drone_obj.drone.get_battery()
 
         if battery < 5:
-            info(f'[INFO] Battery is less "{battery}%".')
+            info(f'Battery is less "{battery}%".')
             break
 
         btn = controller_obj.get_btn_status()
