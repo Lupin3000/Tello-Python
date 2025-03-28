@@ -21,9 +21,9 @@ class EvDevController(BaseController):
 
     _DELAY: float = 0.01
 
-    def __init__(self, name: str):
+    def __init__(self, file_name: str):
         config = ConfigParser()
-        config.read(Path(__file__).parent.parent / "config" / "configuration.ini")
+        config.read(Path(__file__).parent.parent / "config" / file_name)
         
         self._controller_name = name
         self._controller_path = self._search_device()

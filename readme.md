@@ -102,7 +102,7 @@ $ source venv/bin/activate
 
 ### Run application and fly
 
-1. **Mandatory:** Connect controller by USB or Bluetooth (_verify mapping in file `config/configuration.ini`_).
+1. **Mandatory:** Connect controller by USB or Bluetooth (_verify correct mapping configuration `config/*.ini`_).
 2. **Mandatory:** Turn on Tello Drone (_in best case the drone is 100% charged_).
 3. **Mandatory:** Connect WLAN of your computer to the Tello Drone AP (_Default is: TELLO-??????_).
 4. **Optional:** Decide whether you want to enable or disable the HUD (_for video streaming_).
@@ -122,8 +122,10 @@ $ source venv/bin/activate
 
 **Controllers**
 
-- **macOS (_hidapi_):** Google Stadia-Controller
-- **macOS (_hidapi_):** Sony DualSense Wireless Controller
+| OS    | Controller                         | Configuration       |
+|-------|------------------------------------|---------------------|
+| macos | Google Stadia-Controller           | stadia_macos.ini    |
+| macos | Sony DualSense Wireless Controller | dualsense_macos.ini |
 
 **Assignment**
 
@@ -139,7 +141,7 @@ $ source venv/bin/activate
 
 **Controller**
 
-> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another section in the `config/configuration.ini` file with the necessary information. Then specify the name of the section in the `main.py` file by adapting the constant: CONTROLLER value.
+> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another configuration file in the directory `config/` with the necessary information. Then specify the name of the file in the `main.py` file by adapting the constant: CONTROLLER_CONFIG value.
 
 **Python evdev**
 
@@ -154,7 +156,7 @@ If you use Python evdev, you can find out the controller configuration very quic
 
 Inside file `main.py` you can modify following constants:
 
-- **CONTROLLER:** name of section inside file `config/configuration.ini` (_which controller you use to fly_).
+- **CONTROLLER_CONFIG:** name of configuration file inside directory `config/` (_which controller you use to fly_).
 - **SPEED:** integer value between 1 and 100 (_the higher the value, the faster the drone flies_).
 - **STREAM:** True to fly with HUD (_video stream on_) or False for no HUD (_video stream off_).
 - **WINDOW_NAME:** Title of HUD (_video stream_) window.

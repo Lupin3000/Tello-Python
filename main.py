@@ -11,7 +11,7 @@ from libs.drone import TelloDrone
 from libs.stream import VideoStream
 
 
-CONTROLLER: str = 'Stadia'
+CONTROLLER_CONFIG: str = 'stadia_macos.ini'
 SPEED: int = 60
 STREAM: bool = True
 WINDOW_NAME: str = 'DJI Tello Drone HUD'
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     stream = None
 
     factory = ControllerFactory()
-    controller = factory.create(name=CONTROLLER)
+    controller = factory.create(name=CONTROLLER_CONFIG)
     tello = TelloDrone()
 
     try:

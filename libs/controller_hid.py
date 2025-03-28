@@ -22,21 +22,22 @@ class HidController(BaseController):
 
     _DELAY: float = 0.01
 
-    def __init__(self, name: str):
+    def __init__(self, file_name: str):
         """
         Initialize a controller connection and set up attributes to manage controller states,
         button statuses, and analog stick movements. This method attempts to connect to the
         specified controller using the provided vendor and product IDs.
 
-        :param name: The configuration name of the controller.
-        :type name: str
+        :param file_name: The configuration file name of the controller.
+        :type file_name: str
         """
         config = ConfigParser()
-        config.read(Path(__file__).parent.parent / "config" / "configuration.ini")
+        config.read(Path(__file__).parent.parent / "config" / file_name)
 
-        section = config[name]
-        vendor = int(section['vendor'])
-        product = int(section['product'])
+        identification_section = config['Identification']
+        vendor = int(identification_section['vendor'])
+        product = int(identification_section['product'])
+        self._report_length = int(identification_section['report_length'])
 
         try:
             self._controller = device()
@@ -48,21 +49,23 @@ class HidController(BaseController):
             error(f'Failed to connect to controller: "{err}".')
             exit(1)
 
-        self._report_length = int(section['report_length'])
-        self._btn_byte_index = int(section['btn_byte_index'])
+        btn_section = config['Buttons']
+        self._btn_byte_index = int(btn_section['btn_byte_index'])
 
         self._btn = {
-            'TAKEOFF': int(section['btn_takeoff_value']),
-            'LANDING': int(section['btn_landing_value']),
-            'PHOTO': int(section['btn_photo_value'])
+            'TAKEOFF': int(btn_section['btn_takeoff_value']),
+            'LANDING': int(btn_section['btn_landing_value']),
+            'PHOTO': int(btn_section['btn_photo_value'])
         }
 
-        self._analog_middle = int(section['analog_middle_value'])
-        self._analog_threshold = int(section['analog_threshold_value'])
-        self._axis_left_x = int(section['analog_left_x_index'])
-        self._axis_left_y = int(section['analog_left_y_index'])
-        self._axis_right_x = int(section['analog_right_x_index'])
-        self._axis_right_y = int(section['analog_right_y_index'])
+        analog_section = config['AnalogSticks']
+
+        self._analog_middle = int(analog_section['analog_middle_value'])
+        self._analog_threshold = int(analog_section['analog_threshold_value'])
+        self._axis_left_x = int(analog_section['analog_left_x_index'])
+        self._axis_left_y = int(analog_section['analog_left_y_index'])
+        self._axis_right_x = int(analog_section['analog_right_x_index'])
+        self._axis_right_y = int(analog_section['analog_right_y_index'])
 
         self._btn_status = {
             'TAKEOFF': False,
