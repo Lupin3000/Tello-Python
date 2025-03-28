@@ -99,6 +99,13 @@ class EvDevController(BaseController):
         except AttributeError:
             raise ValueError(f'Failed to load correct analog stick configuration.')
 
+        self._axis_values = {
+            'left_x': self._analog_middle,
+            'left_y': self._analog_middle,
+            'right_x': self._analog_middle,
+            'right_y': self._analog_middle
+        }
+
     def _close(self) -> None:
         """
         Closes the connection to the controller.
@@ -128,12 +135,51 @@ class EvDevController(BaseController):
 
                     elif event.type == ecodes.EV_ABS:
                         if event.code == self._axis_right_x:
-                            pass
+                            self._axis_values['right_x'] = event.value
                         elif event.code == self._axis_right_y:
-                            pass
+                            self._axis_values['right_y'] = event.value
                         elif event.code == self._axis_left_x:
-                            pass
+                            self._axis_values['left_x'] = event.value
                         elif event.code == self._axis_left_y:
-                            pass
+                            self._axis_values['left_y'] = event.value
+
+                        self._evaluate_analog_sticks()
         except Exception as err:
             error(f'Controller event error: {err}')
+
+    def _evaluate_analog_sticks(self) -> None:
+        right_x = self._axis_values['right_x']
+        right_y = self._axis_values['right_y']
+
+        if abs(right_x - self._analog_middle) > abs(right_y - self._analog_middle):
+            if right_x + self._analog_threshold < self._analog_middle:
+                self._set_right_stick_active("left")
+            elif right_x - self._analog_threshold > self._analog_middle:
+                self._set_right_stick_active("right")
+            else:
+                self._set_right_stick_active(None)
+        else:
+            if right_y + self._analog_threshold < self._analog_middle:
+                self._set_right_stick_active("forward")
+            elif right_y - self._analog_threshold > self._analog_middle:
+                self._set_right_stick_active("backward")
+            else:
+                self._set_right_stick_active(None)
+
+        left_x = self._axis_values['left_x']
+        left_y = self._axis_values['left_y']
+
+        if abs(left_x - self._analog_middle) > abs(left_y - self._analog_middle):
+            if left_x + self._analog_threshold < self._analog_middle:
+                self._set_left_stick_active("counterclockwise")
+            elif left_x - self._analog_threshold > self._analog_middle:
+                self._set_left_stick_active("clockwise")
+            else:
+                self._set_left_stick_active(None)
+        else:
+            if left_y + self._analog_threshold < self._analog_middle:
+                self._set_left_stick_active("up")
+            elif left_y - self._analog_threshold > self._analog_middle:
+                self._set_left_stick_active("down")
+            else:
+                self._set_left_stick_active(None)
