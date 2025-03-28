@@ -24,8 +24,6 @@ class EvDevController(BaseController):
     def __init__(self, name: str):
         config = ConfigParser()
         config.read(Path(__file__).parent.parent / "config" / "configuration.ini")
-
-        section = config[name]
         
         self._controller_name = name
         self._controller_path = self._search_device()
@@ -40,6 +38,8 @@ class EvDevController(BaseController):
         # missing implementation
         print('[DEVELOPMENT] Missing implementation application stopping.')
         exit(1)
+
+        section = config[name]
 
         self._analog_middle = int(section['analog_middle_value'])
         self._analog_threshold = int(section['analog_threshold_value'])
