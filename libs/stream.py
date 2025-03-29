@@ -1,8 +1,8 @@
-from logging import getLogger, info, warning
 from atexit import register
+from logging import getLogger, info, warning
+from pathlib import Path
 from threading import Event
 from time import strftime
-from pathlib import Path
 from typing import Tuple
 import cv2
 import numpy as np

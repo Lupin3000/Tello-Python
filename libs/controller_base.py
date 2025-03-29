@@ -1,7 +1,7 @@
-from logging import getLogger, debug, info
 from abc import ABC, abstractmethod
 from atexit import register
 from configparser import ConfigParser
+from logging import getLogger, debug, info
 from pathlib import Path
 from threading import Thread, Lock
 from typing import Dict, Optional
