@@ -52,7 +52,7 @@ $ source venv/bin/activate
 (venv) $ pip3 freeze
 ```
 
-> For more details, have a look on the [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/Installation).
+> For more details, have a look on the [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/Installation). There, various systems are discussed in more detail.
 
 ## Usage
 
