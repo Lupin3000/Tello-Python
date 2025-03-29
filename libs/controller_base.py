@@ -1,4 +1,4 @@
-from logging import getLogger, info
+from logging import getLogger, debug, info
 from abc import ABC, abstractmethod
 from atexit import register
 from configparser import ConfigParser
@@ -157,6 +157,8 @@ class BaseController(ABC):
         right_x = self._axis_values['right_x']
         right_y = self._axis_values['right_y']
 
+        debug(f"right_x: {right_x}, right_y: {right_y}")
+
         if abs(right_x - self._analog_middle) > abs(right_y - self._analog_middle):
             if right_x + self._analog_threshold < self._analog_middle:
                 self._set_right_stick_active("left")
@@ -174,6 +176,8 @@ class BaseController(ABC):
 
         left_x = self._axis_values['left_x']
         left_y = self._axis_values['left_y']
+
+        debug(f"left_x: {left_x}, left_y: {left_y}")
 
         if abs(left_x - self._analog_middle) > abs(left_y - self._analog_middle):
             if left_x + self._analog_threshold < self._analog_middle:

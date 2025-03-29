@@ -1,4 +1,4 @@
-from logging import getLogger, info
+from logging import getLogger, debug, info
 from atexit import register
 from time import sleep
 from typing import Optional
@@ -106,6 +106,11 @@ class TelloDrone:
         :return: None
         """
         if not self.grounded:
+            debug(f'LR:{self.speed.left_right}')
+            debug(f'FB:{self.speed.forward_backward}')
+            debug(f'UD:{self.speed.up_down}')
+            debug(f'CC:{self.speed.clockwise_counterclockwise}')
+
             self.drone.send_rc_control(self.speed.left_right,
                                        self.speed.forward_backward,
                                        self.speed.up_down,
