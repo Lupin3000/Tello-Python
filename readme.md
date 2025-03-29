@@ -26,6 +26,11 @@ The code is written and tested with following requirements:
 | Debian 12     | [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy) |
 | Debian 12     | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
 | Debian 12     | [![Static](https://img.shields.io/badge/numpy-==2.2.4-green)](https://numpy.org)                               |
+| Unihiker      | [![Static](https://img.shields.io/badge/python-==3.7.3-green)](https://python.org)                             | 
+| Unihiker      | [![Static](https://img.shields.io/badge/evdev-==1.7.1-green)](https://github.com/gvalkov/python-evdev)         |
+| Unihiker      | [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy) |
+| Unihiker      | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
+| Unihiker      | [![Static](https://img.shields.io/badge/numpy-==1.21.6-green)](https://numpy.org)                              |
 
 ### Quick installation
 
@@ -103,9 +108,8 @@ In the [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/Configuration) you 
 
 ### Compatibility
 
-Currently, this project is only fully supported on macOS. Users on other operating systems might encounter compatibility issues or limitations when running the project. Please ensure you are using macOS for the best experience.
+Currently, this project is only fully supported on macOS and Linux. Users on other operating systems might encounter compatibility issues or limitations when running the project. Please ensure you are using macOS or Linux for the best experience.
 
 ### Open items
 
-- Linux compatibility (_via Python evdev_) -> in testing
 - Add more controller actions (_eq. drone flip, video recording, etc._)
