@@ -70,6 +70,8 @@ $ source venv/bin/activate
 5. **Optional:** Check your surroundings to see if you can fly the drone safely.
 6. **Mandatory:** Run the Python application (_use file `main.py`_).
 
+Have a look on this [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/WLAN-connection-to-Tello-Drone) page for more details about WLAN connection (_to the Tello drone_).
+
 ```shell
 # run application
 (venv) $ python3 main.py
