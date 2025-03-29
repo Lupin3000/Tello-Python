@@ -26,11 +26,11 @@ The code is written and tested with following requirements:
 | Debian 12     | [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy) |
 | Debian 12     | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
 | Debian 12     | [![Static](https://img.shields.io/badge/numpy-==2.2.4-green)](https://numpy.org)                               |
-| Unihiker      | [![Static](https://img.shields.io/badge/python-==3.7.3-green)](https://python.org)                             | 
-| Unihiker      | [![Static](https://img.shields.io/badge/evdev-==1.7.1-green)](https://github.com/gvalkov/python-evdev)         |
-| Unihiker      | [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy) |
-| Unihiker      | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
-| Unihiker      | [![Static](https://img.shields.io/badge/numpy-==1.21.6-green)](https://numpy.org)                              |
+| Unihiker M10  | [![Static](https://img.shields.io/badge/python-==3.7.3-green)](https://python.org)                             | 
+| Unihiker M10  | [![Static](https://img.shields.io/badge/evdev-==1.7.1-green)](https://github.com/gvalkov/python-evdev)         |
+| Unihiker M10  | [![Static](https://img.shields.io/badge/djitellopy-==2.5.0-green)](https://github.com/damiafuentes/DJITelloPy) |
+| Unihiker M10  | [![Static](https://img.shields.io/badge/opencv-==4.11.0.86-green)](https://github.com/opencv/opencv-python)    |
+| Unihiker M10  | [![Static](https://img.shields.io/badge/numpy-==1.21.6-green)](https://numpy.org)                              |
 
 ### Quick installation
 
