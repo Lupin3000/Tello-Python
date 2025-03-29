@@ -97,29 +97,7 @@ $ source venv/bin/activate
 
 ### Own configuration
 
-**Controller**
-
-> You also can add and use other controllers. Please note that the controller must have at least 2 analog sticks! Simply create another configuration file in the directory `config/` with the necessary information. Then specify the name of the file in the `main.py` file by adapting the constant: CONTROLLER_CONFIG value.
-
-**Python evdev**
-
-If you use Python evdev, you can find out the controller configuration very quickly with just one command!
-
-```shell
-# get controller configuration
-(venv) $ python3 -m evdev.evtest
-```
-
-**Constants**
-
-Inside file `main.py` you can modify following constants:
-
-- **CONTROLLER_CONFIG:** name of configuration file inside directory `config/` (_which controller you use to fly_).
-- **SPEED:** integer value between 1 and 100 (_the higher the value, the faster the drone flies_).
-- **STREAM:** True to fly with HUD (_video stream on_) or False for no HUD (_video stream off_).
-- **WINDOW_NAME:** Title of HUD (_video stream_) window.
-
-> You should not change the values of the constants DELAY and SHUTDOWN. This can cause problems if you don't know 100% what you are changing.
+In the [Wiki](https://github.com/Lupin3000/Tello-Python/wiki/Configuration) you will find more details to create your own configurations.
 
 ## Notes
 
