@@ -1,4 +1,4 @@
-from logging import getLogger, info
+from logging import getLogger, debug
 from platform import system
 from libs.controller_base import BaseController
 
@@ -27,11 +27,11 @@ class ControllerFactory:
         :rtype: BaseController
         """
         if self._system_name == 'Darwin':
-            info('Using Python hidapi controller.')
+            debug('Using Python hidapi controller.')
             from libs.controller_hid import HidController
             return HidController(file_name=name)
         elif self._system_name == 'Linux':
-            info('Using Python evdev controller.')
+            debug('Using Python evdev controller.')
             from libs.controller_evdev import EvDevController
             return EvDevController(file_name=name)
         else:
